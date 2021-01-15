@@ -1,7 +1,7 @@
 import React, { useState, useRef } from "react";
 import { connect } from "react-redux";
-import { Redirect } from "react-router-dom";
-import { Input, Button } from "reactstrap";
+import { Link, Redirect } from "react-router-dom";
+import { Input, Button, FormGroup, Label } from "reactstrap";
 import { signupAction, fetchCartByUserIdAction } from "../redux/actions";
 
 let loginInfo = {
@@ -31,38 +31,69 @@ function SignUp(props) {
 		return <Redirect to="/" />;
 	}
 	return (
-		<div>
-			<h2>Join our community!</h2>
-			<form className="input-field" onSubmit={handleSubmit}>
-				<h6>Email</h6>
-				<Input
-					type="email"
-					id="email"
-					onChange={handleInput}
-					ref={emailCheck}
-					value={signUp.email}
-					pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$"
-					required
-				/>
-				<h6>Password</h6>
-				<Input
-					type="password"
-					id="password"
-					onChange={handleInput}
-					value={signUp.password}
-					pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$"
-					required
-				/>
-				<h6>Confirm Password</h6>
-				<Input
-					type="password"
-					id="confirm"
-					onChange={handleInput}
-					value={signUp.confirm}
-					required
-				/>
-				<Button>Sign Up</Button>
-			</form>
+		<div className="d-flex user-container align-items-center justify-content-center">
+			<div className="user-card">
+				<h4>CREATE AN ACCOUNT TO GET STARTED</h4>
+				<div className="already-box">
+					Already have an account?
+					<Link to="/login">
+						<Button color="danger" className="ml-3">
+							SIGN IN
+						</Button>
+					</Link>
+				</div>
+				<form className="input-field mt-3" onSubmit={handleSubmit}>
+					<div>
+						<h6>Email</h6>
+						<Input
+							className="user-input"
+							type="email"
+							id="email"
+							onChange={handleInput}
+							ref={emailCheck}
+							value={signUp.email}
+							pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$"
+							required
+						/>
+					</div>
+
+					<div className="my-4">
+						<h6>Password</h6>
+						<Input
+							className="user-input"
+							type="password"
+							id="password"
+							onChange={handleInput}
+							value={signUp.password}
+							pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$"
+							required
+						/>
+					</div>
+					<div>
+						<h6>Confirm Password</h6>
+						<Input
+							className="user-input"
+							type="password"
+							id="confirm"
+							onChange={handleInput}
+							value={signUp.confirm}
+							required
+						/>
+					</div>
+					<FormGroup check>
+						<Label check style={{ fontSize: "12px" }}>
+							<Input type="checkbox" /> I agree to the following: Privacy Policy
+							Terms of Service
+						</Label>
+					</FormGroup>
+					<Button color="warning" className="my-4">
+						SIGN UP
+					</Button>
+					<p style={{ fontSize: "12px" }}>
+						Not your computer? Please make sure to log out before you leave
+					</p>
+				</form>
+			</div>
 		</div>
 	);
 }

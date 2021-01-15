@@ -5,7 +5,7 @@ import { Button } from "reactstrap";
 import { api_url } from "../helpers/api_url";
 import { fetchProductsAction, addToCartAction } from "../redux/actions";
 import { Link } from "react-router-dom";
-
+import swal from "sweetalert";
 import Bounce from "react-reveal/Bounce";
 import gsap from "gsap";
 
@@ -13,8 +13,6 @@ function Home(props) {
 	const [disabled] = useState(false);
 	const [getProducts, setGetProducts] = useState([]);
 	const [selectedCategory, setSelectedCategory] = useState(0);
-	const [cart, setCart] = useState({});
-	// const [rightsideEnabled, setrightsideEnabled] = useState(false);
 
 	// const disable = () => {
 	// 	setDisabled(!disabled);
@@ -40,17 +38,18 @@ function Home(props) {
 		});
 	};
 	const handleAddToCart = (id) => {
-		// setCart(val);
-		// console.log(cart);
-		props.addToCartAction(id);
-		// axios
-		// 	.post(`${api_url}/cart`, cart)
-		// 	.then((res) => {
-		// 		console.log(res);
-		// 	})
-		// 	.catch((err) => {
-		// 		console.log(err);
-		// 	});
+		if (props.userID !== 0) {
+			props.addToCartAction(id);
+			swal({
+				title: "Added to cart!",
+				icon: "success",
+			});
+		} else {
+			swal({
+				title: "You need to login first!",
+				icon: "warning",
+			});
+		}
 	};
 	useEffect(() => {
 		props.fetchProductsAction();
@@ -59,7 +58,7 @@ function Home(props) {
 	const renderProducts = () => {
 		return getProducts.map((val) => {
 			return (
-				<div className="m-4">
+				<div key={val.id} className="m-4">
 					<Bounce right>
 						<div className="d-flex flex-column">
 							<Link to={`/product-detail?${val.id}`}>
@@ -92,11 +91,7 @@ function Home(props) {
 			);
 		});
 	};
-	// const fetchProducts = () => {
-	// 	props.fetchProductsAction();
-	// };
 	const filterCategory = (i) => {
-		// disable();
 		setSelectedCategory(i);
 		if (getProducts.length !== 0) {
 			setGetProducts([]);
@@ -136,15 +131,6 @@ function Home(props) {
 			className="d-flex p-3 align-items-center justify-content-center main-body "
 			style={{ width: "100%", height: "auto", paddingTop: "40px" }}
 		>
-			{/* {category.map((val) => (
-					<p
-						className="clickable clickable-category d-flex"
-						onClick={() => filterCategory(val.id)}
-					>
-						{val.category}
-					</p>
-				))} */}
-
 			<div className="d-flex w-50 flex-column">
 				<p
 					className="clickable clickable-category"
@@ -197,9 +183,10 @@ function Home(props) {
 		</div>
 	);
 }
-const mapStateToProps = ({ product }) => {
+const mapStateToProps = ({ product, user }) => {
 	return {
 		productList: product.productList,
+		userID: user.id,
 	};
 };
 export default connect(mapStateToProps, {

@@ -1,7 +1,7 @@
 {
   "users": [
     {
-      "email": "adhtanjung@gmail.com",
+      "email": "adhitanjung@gmail.com",
       "password": "Asd12345",
       "id": 1
     },
@@ -27,42 +27,48 @@
       "name": "malmsey",
       "image": "http://www.pngall.com/wp-content/uploads/5/Barbecue-Hamburger-Transparent.png",
       "category": 4,
-      "price": 69000
+      "price": 69000,
+      "stock": 100
     },
     {
       "id": 2,
       "name": "jawhole",
       "image": "http://www.pngall.com/wp-content/uploads/2016/05/Burger-Free-PNG-Image.png",
       "category": 3,
-      "price": 39000
+      "price": 39000,
+      "stock": 100
     },
     {
       "id": 3,
       "name": "onager",
       "image": "http://www.pngall.com/wp-content/uploads/2016/05/Burger-PNG-Clipart.png",
       "category": 2,
-      "price": 24900
+      "price": 24900,
+      "stock": 100
     },
     {
       "id": 4,
-      "name": "malmsey",
-      "image": "http://www.pngall.com/wp-content/uploads/5/Barbecue-Hamburger-Transparent.png",
-      "category": 4,
-      "price": 69000
+      "name": "sard",
+      "image": "http://www.pngall.com/wp-content/uploads/5/Hamburger-PNG-Image.png",
+      "category": 2,
+      "price": 29000,
+      "stock": 100
     },
     {
       "id": 5,
-      "name": "malmsey",
-      "image": "http://www.pngall.com/wp-content/uploads/5/Barbecue-Hamburger-Transparent.png",
-      "category": 4,
-      "price": 69000
+      "name": "helminth",
+      "image": "http://www.pngall.com/wp-content/uploads/5/Barbecue-Hamburger-PNG-Image.png",
+      "category": 3,
+      "price": 49000,
+      "stock": 100
     },
     {
       "id": 6,
-      "name": "malmsey",
-      "image": "http://www.pngall.com/wp-content/uploads/5/Barbecue-Hamburger-Transparent.png",
+      "name": "bombic",
+      "image": "https://assets.stickpng.com/images/5882488ae81acb96424ffaaf.png",
       "category": 4,
-      "price": 69000
+      "price": 79000,
+      "stock": 100
     }
   ],
   "categoryProducts": [
@@ -89,279 +95,12 @@
   ],
   "cart": [
     {
-      "id": 1,
-      "name": "malmsey",
-      "image": "http://www.pngall.com/wp-content/uploads/5/Barbecue-Hamburger-Transparent.png",
-      "category": 4,
-      "price": 69000
-    },
-    {
-      "name": "malmsey",
-      "image": "http://www.pngall.com/wp-content/uploads/5/Barbecue-Hamburger-Transparent.png",
-      "category": 4,
-      "price": 69000,
-      "id": 2
-    },
-    {
-      "name": "malmsey",
-      "image": "http://www.pngall.com/wp-content/uploads/5/Barbecue-Hamburger-Transparent.png",
-      "category": 4,
-      "price": 69000,
-      "id": 3
-    },
-    {
-      "name": "malmsey",
-      "image": "http://www.pngall.com/wp-content/uploads/5/Barbecue-Hamburger-Transparent.png",
-      "category": 4,
-      "price": 69000,
-      "id": 4
-    },
-    {
-      "name": "malmsey",
-      "image": "http://www.pngall.com/wp-content/uploads/5/Barbecue-Hamburger-Transparent.png",
-      "category": 4,
-      "price": 69000,
-      "id": 5
-    },
-    {
-      "name": "malmsey",
-      "image": "http://www.pngall.com/wp-content/uploads/5/Barbecue-Hamburger-Transparent.png",
-      "category": 4,
-      "price": 69000,
-      "id": 6
-    },
-    {
-      "name": "malmsey",
-      "image": "http://www.pngall.com/wp-content/uploads/5/Barbecue-Hamburger-Transparent.png",
-      "category": 4,
-      "price": 69000,
-      "id": 7
-    },
-    {
-      "name": "malmsey",
-      "image": "http://www.pngall.com/wp-content/uploads/5/Barbecue-Hamburger-Transparent.png",
-      "category": 4,
-      "price": 69000,
-      "id": 8
-    },
-    {
-      "name": "malmsey",
-      "image": "http://www.pngall.com/wp-content/uploads/5/Barbecue-Hamburger-Transparent.png",
-      "category": 4,
-      "price": 69000,
-      "id": 9
-    },
-    {
-      "name": "malmsey",
-      "image": "http://www.pngall.com/wp-content/uploads/5/Barbecue-Hamburger-Transparent.png",
-      "category": 4,
-      "price": 69000,
-      "id": 10
-    },
-    {
-      "name": "malmsey",
-      "image": "http://www.pngall.com/wp-content/uploads/5/Barbecue-Hamburger-Transparent.png",
-      "category": 4,
-      "price": 69000,
-      "id": 11
-    },
-    {
-      "name": "malmsey",
-      "image": "http://www.pngall.com/wp-content/uploads/5/Barbecue-Hamburger-Transparent.png",
-      "category": 4,
-      "price": 69000,
-      "id": 12
-    },
-    {
-      "name": "malmsey",
-      "image": "http://www.pngall.com/wp-content/uploads/5/Barbecue-Hamburger-Transparent.png",
-      "category": 4,
-      "price": 69000,
-      "userID": "1",
-      "id": 13
-    },
-    {
-      "name": "jawhole",
-      "image": "http://www.pngall.com/wp-content/uploads/2016/05/Burger-Free-PNG-Image.png",
-      "category": 3,
-      "price": 39000,
-      "userID": "1",
-      "id": 14
-    },
-    {
       "name": "onager",
       "image": "http://www.pngall.com/wp-content/uploads/2016/05/Burger-PNG-Clipart.png",
       "category": 2,
       "price": 24900,
       "userID": "1",
-      "id": 15
-    },
-    {
-      "name": "malmsey",
-      "image": "http://www.pngall.com/wp-content/uploads/5/Barbecue-Hamburger-Transparent.png",
-      "category": 4,
-      "price": 69000,
-      "userID": "1",
-      "id": 16
-    },
-    {
-      "name": "malmsey",
-      "image": "http://www.pngall.com/wp-content/uploads/5/Barbecue-Hamburger-Transparent.png",
-      "category": 4,
-      "price": 69000,
-      "userID": "1",
-      "id": 17
-    },
-    {
-      "name": "malmsey",
-      "image": "http://www.pngall.com/wp-content/uploads/5/Barbecue-Hamburger-Transparent.png",
-      "category": 4,
-      "price": 69000,
-      "userID": "1",
-      "id": 18
-    },
-    {
-      "name": "malmsey",
-      "image": "http://www.pngall.com/wp-content/uploads/5/Barbecue-Hamburger-Transparent.png",
-      "category": 4,
-      "price": 69000,
-      "userID": "1",
-      "id": 19
-    },
-    {
-      "name": "malmsey",
-      "image": "http://www.pngall.com/wp-content/uploads/5/Barbecue-Hamburger-Transparent.png",
-      "category": 4,
-      "price": 69000,
-      "userID": "1",
-      "id": 20
-    },
-    {
-      "name": "onager",
-      "image": "http://www.pngall.com/wp-content/uploads/2016/05/Burger-PNG-Clipart.png",
-      "category": 2,
-      "price": 24900,
-      "userID": "1",
-      "id": 21
-    },
-    {
-      "name": "onager",
-      "image": "http://www.pngall.com/wp-content/uploads/2016/05/Burger-PNG-Clipart.png",
-      "category": 2,
-      "price": 24900,
-      "userID": "1",
-      "id": 22
-    },
-    {
-      "name": "onager",
-      "image": "http://www.pngall.com/wp-content/uploads/2016/05/Burger-PNG-Clipart.png",
-      "category": 2,
-      "price": 24900,
-      "userID": "1",
-      "id": 23
-    },
-    {
-      "name": "jawhole",
-      "image": "http://www.pngall.com/wp-content/uploads/2016/05/Burger-Free-PNG-Image.png",
-      "category": 3,
-      "price": 39000,
-      "userID": "1",
-      "id": 24
-    },
-    {
-      "name": "jawhole",
-      "image": "http://www.pngall.com/wp-content/uploads/2016/05/Burger-Free-PNG-Image.png",
-      "category": 3,
-      "price": 39000,
-      "userID": "1",
-      "id": 25
-    },
-    {
-      "name": "jawhole",
-      "image": "http://www.pngall.com/wp-content/uploads/2016/05/Burger-Free-PNG-Image.png",
-      "category": 3,
-      "price": 39000,
-      "userID": "1",
-      "id": 26
-    },
-    {
-      "name": "malmsey",
-      "image": "http://www.pngall.com/wp-content/uploads/5/Barbecue-Hamburger-Transparent.png",
-      "category": 4,
-      "price": 69000,
-      "userID": "1",
-      "id": 27
-    },
-    {
-      "name": "malmsey",
-      "image": "http://www.pngall.com/wp-content/uploads/5/Barbecue-Hamburger-Transparent.png",
-      "category": 4,
-      "price": 69000,
-      "userID": "1",
-      "id": 28
-    },
-    {
-      "name": "malmsey",
-      "image": "http://www.pngall.com/wp-content/uploads/5/Barbecue-Hamburger-Transparent.png",
-      "category": 4,
-      "price": 69000,
-      "userID": "1",
-      "id": 29
-    },
-    {
-      "name": "onager",
-      "image": "http://www.pngall.com/wp-content/uploads/2016/05/Burger-PNG-Clipart.png",
-      "category": 2,
-      "price": 24900,
-      "userID": "1",
-      "id": 30
-    },
-    {
-      "name": "onager",
-      "image": "http://www.pngall.com/wp-content/uploads/2016/05/Burger-PNG-Clipart.png",
-      "category": 2,
-      "price": 24900,
-      "userID": "1",
-      "id": 31
-    },
-    {
-      "name": "jawhole",
-      "image": "http://www.pngall.com/wp-content/uploads/2016/05/Burger-Free-PNG-Image.png",
-      "category": 3,
-      "price": 39000,
-      "userID": "1",
-      "id": 32
-    },
-    {
-      "name": "malmsey",
-      "image": "http://www.pngall.com/wp-content/uploads/5/Barbecue-Hamburger-Transparent.png",
-      "category": 4,
-      "price": 69000,
-      "userID": "1",
-      "id": 33
-    },
-    {
-      "name": "malmsey",
-      "image": "http://www.pngall.com/wp-content/uploads/5/Barbecue-Hamburger-Transparent.png",
-      "category": 4,
-      "price": 69000,
-      "userID": "1",
-      "id": 34
-    },
-    {
-      "name": "onager",
-      "image": "http://www.pngall.com/wp-content/uploads/2016/05/Burger-PNG-Clipart.png",
-      "category": 2,
-      "price": 24900,
-      "userID": "1",
-      "id": 35
-    },
-    {
-      "name": "onager",
-      "image": "http://www.pngall.com/wp-content/uploads/2016/05/Burger-PNG-Clipart.png",
-      "category": 2,
-      "price": 24900,
-      "id": 36
+      "id": 1
     }
   ]
 }

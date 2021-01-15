@@ -14,13 +14,13 @@ const store = configureStore({
 	reducer,
 });
 ReactDOM.render(
-	<React.StrictMode>
+	<React.Fragment>
 		<Provider store={store}>
 			<BrowserRouter>
 				<App />
 			</BrowserRouter>
 		</Provider>
-	</React.StrictMode>,
+	</React.Fragment>,
 	document.getElementById("root")
 );
 

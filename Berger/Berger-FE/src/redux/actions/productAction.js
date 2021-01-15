@@ -16,3 +16,13 @@ export const fetchProductsAction = () => {
 			});
 	};
 };
+export const addProductAction = (data) => {
+	return async (dispatch) => {
+		try {
+			await axios.post(`${api_url}/products`, data);
+		} catch (err) {
+			console.log(err);
+		}
+		dispatch(fetchProductsAction());
+	};
+};

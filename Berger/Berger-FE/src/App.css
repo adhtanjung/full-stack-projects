@@ -1,6 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@700;800&display=swap");
 .appjs {
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
 }
 
 .header-left {
@@ -11,8 +11,66 @@
   width: 20%;
 }
 
-.input-field {
+.user-container {
+  width: 100%;
+}
+
+.user-container .user-card {
+  width: -webkit-fit-content;
+  width: -moz-fit-content;
+  width: fit-content;
+  background-color: #553114;
+  padding: 50px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  border-radius: 20px;
+  -webkit-box-shadow: 1px 0px 8px 0px #252525;
+          box-shadow: 1px 0px 8px 0px #252525;
+}
+
+.user-container .user-card .input-field {
   width: 400px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+
+.user-container .user-card .user-input {
+  background-color: transparent;
+  color: #fdba9a;
+  border-color: #d67c52;
+}
+
+.user-container .user-card .user-input:focus {
+  border-color: #fdba9a;
+  -webkit-box-shadow: 1px 0px 8px 0px #fdba9a;
+          box-shadow: 1px 0px 8px 0px #fdba9a;
+}
+
+.user-container .user-card .btn {
+  border-radius: 30px;
+}
+
+.user-container .user-card .already-box {
+  background-color: #351d08;
+  padding: 20px;
+  font-size: 14px;
+  border-radius: 50px;
 }
 
 .clickable {
@@ -58,5 +116,38 @@
 .badge {
   position: relative;
   color: red;
+}
+
+.disabled-input {
+  background-color: transparent !important;
+  color: #fdba9a !important;
+  border-color: #fdba9a !important;
+}
+
+.disabled-input:disabled {
+  color: #bb9a8b !important;
+  background-color: #382618 !important;
+}
+
+.container-card {
+  border: 1px solid black;
+  padding: 20px 60px 20px 60px !important;
+  border-color: black;
+  -webkit-box-shadow: 1px 0px 8px 0px #252525;
+          box-shadow: 1px 0px 8px 0px #252525;
+  border-radius: 20px;
+}
+
+.rounded-box {
+  background-color: #351d08;
+  padding: 60px;
+  font-size: 14px;
+  border-radius: 80px;
+  width: 600px;
+}
+
+.modal-style {
+  background-color: #f64b3c;
+  color: black !important;
 }
 /*# sourceMappingURL=App.css.map */
