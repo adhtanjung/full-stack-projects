@@ -55,4 +55,34 @@ router.post("/", (req, res) => {
 	);
 });
 
+// DELETE PRODUCT
+router.delete("/:id", (req, res) => {
+	const id = req.params.id;
+	db.query(`DELETE FROM products WHERE id=${id}`, (err, data) => {
+		if (err) {
+			return res.status(500).send(err.message);
+		}
+		return res.status(201).send({
+			message: "DATA_DELETED",
+			status: "DELETED",
+		});
+	});
+});
+
+// EDIT PRODUCT
+router.patch("/:id", (req, res) => {
+	const id = req.params.id;
+	const { name, image, category, price } = req.body;
+	db.query(
+		`UPDATE products SET name='${name}', image='${image}',category=${category},price=${price} WHERE id=${id}`,
+		req.body,
+		(err, data) => {
+			if (err) {
+				return res.status(500).send(err.message);
+			}
+			return res.status(201).send(data);
+		}
+	);
+});
+
 module.exports = router;

@@ -119,6 +119,16 @@ $text-color: #fdba9a;
 	width: 600px;
 }
 .modal-style {
-	background-color: #f64b3c;
 	color: black !important;
+	background-color: transparent;
+}
+
+.input-style {
+	background-color: transparent !important;
+	color: #fdba9a !important;
+	border-color: #d67c52 !important;
+	&:focus {
+		border-color: #fdba9a !important;
+		box-shadow: 1px 0px 8px 0px #fdba9a !important;
+	}
 }

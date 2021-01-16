@@ -147,7 +147,19 @@
 }
 
 .modal-style {
-  background-color: #f64b3c;
   color: black !important;
+  background-color: transparent;
+}
+
+.input-style {
+  background-color: transparent !important;
+  color: #fdba9a !important;
+  border-color: #d67c52 !important;
+}
+
+.input-style:focus {
+  border-color: #fdba9a !important;
+  -webkit-box-shadow: 1px 0px 8px 0px #fdba9a !important;
+          box-shadow: 1px 0px 8px 0px #fdba9a !important;
 }
 /*# sourceMappingURL=App.css.map */

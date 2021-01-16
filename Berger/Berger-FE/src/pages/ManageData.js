@@ -3,7 +3,12 @@ import { connect } from "react-redux";
 import { Redirect } from "react-router-dom";
 import { Button, Input, Table } from "reactstrap";
 import AddProductModal from "../components/AddProductModal";
-import { addProductAction, fetchProductsAction } from "../redux/actions";
+import {
+	addProductAction,
+	fetchProductsAction,
+	deleteProductAction,
+	editProductAction,
+} from "../redux/actions";
 
 let input = {
 	name: "",
@@ -11,8 +16,17 @@ let input = {
 	category: 0,
 	price: 0,
 };
+let input2 = {
+	id: 0,
+	name: "",
+	image: "",
+	category: 0,
+	price: 0,
+};
 function ManageData(props) {
 	const [productInput, setproductInput] = useState(input);
+	const [productEditInput, setproductEditInput] = useState(input2);
+	const [selected, setSelected] = useState(null);
 
 	useEffect(() => {
 		props.fetchProductsAction();
@@ -20,7 +34,56 @@ function ManageData(props) {
 	const renderProduct = () => {
 		const { productList } = props;
 
-		return productList.map((val) => {
+		return productList.map((val, index) => {
+			if (selected === index) {
+				return (
+					<tr>
+						<td>
+							<td>{val.id}</td>
+						</td>
+						<td>
+							<Input
+								type="text"
+								onChange={handleEditInput}
+								id="name"
+								value={productEditInput.name}
+							/>
+						</td>
+						<td>
+							<Input
+								type="text"
+								onChange={handleEditInput}
+								id="image"
+								value={productEditInput.image}
+							/>
+						</td>
+						<td>
+							<Input
+								type="text"
+								onChange={handleEditInput}
+								id="category"
+								value={productEditInput.category}
+							/>
+						</td>
+						<td>
+							<Input
+								type="text"
+								onChange={handleEditInput}
+								id="price"
+								value={productEditInput.price}
+							/>
+						</td>
+
+						<td>
+							<Button onClick={() => handleConfirmEdit(val.id)}>Confirm</Button>
+						</td>
+						<td>
+							<Button onClick={handleCancel}>Cancel</Button>
+						</td>
+					</tr>
+				);
+			}
+
 			return (
 				<tr>
 					<td>{val.id}</td>
@@ -31,14 +94,36 @@ function ManageData(props) {
 					<td>{val.category}</td>
 					<td>{val.price}</td>
 					<td>
-						<Button>Edit</Button>
+						<Button onClick={() => handleEdit(index, val)}>Edit</Button>
 					</td>
 					<td>
-						<Button>Delete</Button>
+						<Button onClick={() => handleDelete(val.id)}>Delete</Button>
 					</td>
 				</tr>
 			);
 		});
+	};
+
+	const handleCancel = () => {
+		setSelected(null);
+	};
+	const handleConfirmEdit = (id) => {
+		props.editProductAction(productEditInput, id);
+		setSelected(null);
+	};
+
+	const handleEdit = (index, val) => {
+		setSelected(index);
+		const { name, image, category, price } = val;
+		setproductEditInput({
+			name: name,
+			image: image,
+			category: category,
+			price: price,
+		});
+	};
+	const handleDelete = (id) => {
+		props.deleteProductAction(id);
 	};
 
 	const handleInput = (e) => {
@@ -47,48 +132,68 @@ function ManageData(props) {
 			[e.target.id]: e.target.value,
 		});
 	};
+	const handleEditInput = (e) => {
+		setproductEditInput({
+			...productEditInput,
+			[e.target.id]: e.target.value,
+		});
+	};
 	const handleAdd = () => {
 		props.addProductAction(productInput);
+		setproductInput(input);
 	};
 	const inputs = () => {
 		return (
-			<div className="d-flex mb-3">
-				<Input
-					type="text"
-					placeholder="Product_Name"
-					onChange={handleInput}
-					id="name"
-					value={name}
-				/>
-				<Input
-					type="text"
-					placeholder="Product_Image"
-					className="mx-3"
-					onChange={handleInput}
-					id="image"
-					value={image}
-				/>
-				<Input
-					type="number"
-					placeholder="Product_Category_ID"
-					onChange={handleInput}
-					id="category"
-					value={category}
-				/>
-				<Input
-					type="number"
-					placeholder="Product_Price"
-					className="mx-3"
-					onChange={handleInput}
-					id="price"
-					value={price}
-				/>
-				<Button onClick={handleAdd}>Add</Button>
+			<div className="d-flex flex-column mb-3">
+				<div>
+					<h6>Product Name</h6>
+					<Input
+						type="text"
+						placeholder="Product_Name"
+						onChange={handleInput}
+						id="name"
+						value={name}
+						className="input-style"
+					/>
+				</div>
+				<div className="my-3">
+					<h6>Product Image</h6>
+					<Input
+						type="text"
+						placeholder="Product_Image"
+						className="input-style"
+						onChange={handleInput}
+						id="image"
+						value={image}
+					/>
+				</div>
+				<div>
+					<h6>Product CategoryID</h6>
+					<Input
+						type="number"
+						placeholder="Product_Category_ID"
+						onChange={handleInput}
+						id="category"
+						value={category}
+						className="input-style"
+					/>
+				</div>
+
+				<div className="my-3">
+					<h6>Product Price</h6>
+					<Input
+						type="number"
+						placeholder="Product_Price"
+						className="input-style"
+						onChange={handleInput}
+						id="price"
+						value={price}
+					/>
+				</div>
 			</div>
 		);
 	};
 	const { name, image, category, price } = productInput;
-	console.log(productInput);
 	if (props.userID === 0) {
 		return <Redirect to="/" />;
 	}
@@ -101,6 +206,7 @@ function ManageData(props) {
 						input={inputs()}
 						buttonLabel="Add Product"
 						className="modal-style"
+						handleAdd={handleAdd}
 					/>
 				</div>
 			</center>
@@ -135,4 +241,6 @@ const mapStateToProps = ({ product, user }) => {
 export default connect(mapStateToProps, {
 	addProductAction,
 	fetchProductsAction,
+	deleteProductAction,
+	editProductAction,
 })(ManageData);
