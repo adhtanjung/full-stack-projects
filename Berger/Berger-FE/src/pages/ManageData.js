@@ -31,6 +31,8 @@ function ManageData(props) {
 	useEffect(() => {
 		props.fetchProductsAction();
 	}, []);
+
+	// RENDER PRODUCTS
 	const renderProduct = () => {
 		const { productList } = props;
 
@@ -78,7 +80,7 @@ function ManageData(props) {
 							<Button onClick={() => handleConfirmEdit(val.id)}>Confirm</Button>
 						</td>
 						<td>
-							<Button onClick={handleCancel}>Cancel</Button>
+							<Button onClick={handleCancelEdit}>Cancel</Button>
 						</td>
 					</tr>
 				);
@@ -104,28 +106,42 @@ function ManageData(props) {
 		});
 	};
 
-	const handleCancel = () => {
-		setSelected(null);
-	};
-	const handleConfirmEdit = (id) => {
-		props.editProductAction(productEditInput, id);
-		setSelected(null);
-	};
-
+	// EDIT PRODUCT FUNCTIONS
+	////////////////////////////
+	////////////////////////////
 	const handleEdit = (index, val) => {
-		setSelected(index);
-		const { name, image, category, price } = val;
+		setSelected(index); //set selected product using product's index
+		const { name, image, category, price } = val; // retrieve object keys and destructuring it
 		setproductEditInput({
+			//set value obtained from above
 			name: name,
 			image: image,
 			category: category,
 			price: price,
 		});
 	};
+	const handleCancelEdit = () => {
+		setSelected(null);
+	};
+	const handleConfirmEdit = (id) => {
+		props.editProductAction(productEditInput, id); //value determined after you clicked edit button or,and value obtained from onchange function
+		setSelected(null);
+	};
+	////////////////////////////
+	////////////////////////////
+
+	// DELETE PRODUCT FUNCTION
+	////////////////////////////
+	////////////////////////////
 	const handleDelete = (id) => {
 		props.deleteProductAction(id);
 	};
+	////////////////////////////
+	////////////////////////////
 
+	// HANDLE INPUT, ADD & EDIT
+	////////////////////////////
+	////////////////////////////
 	const handleInput = (e) => {
 		setproductInput({
 			...productInput,
@@ -138,10 +154,31 @@ function ManageData(props) {
 			[e.target.id]: e.target.value,
 		});
 	};
+	////////////////////////////
+	////////////////////////////
+
+	// ADD FUNCTION
+	////////////////////////////
+	////////////////////////////
 	const handleAdd = () => {
 		props.addProductAction(productInput);
 		setproductInput(input);
 	};
+	////////////////////////////
+	////////////////////////////
+
+	// CLEAR INPUT FIELD EVERYTIME YOU DECIDED TO CANCEL
+	////////////////////////////
+	////////////////////////////
+	const handleClearInput = () => {
+		setproductInput(input);
+	};
+	////////////////////////////
+	////////////////////////////
+
+	// INPUT FIELDS GIVEN AS A PROP >> ADD PRODUCT MODAL
+	////////////////////////////
+	////////////////////////////
 	const inputs = () => {
 		return (
 			<div className="d-flex flex-column mb-3">
@@ -193,6 +230,9 @@ function ManageData(props) {
 			</div>
 		);
 	};
+	////////////////////////////
+	////////////////////////////
+
 	const { name, image, category, price } = productInput;
 	if (props.userID === 0) {
 		return <Redirect to="/" />;
@@ -201,12 +241,13 @@ function ManageData(props) {
 		<div className="px-4 mt-5">
 			<center>
 				<div className="d-flex rounded-box align-items-center mb-5">
-					<h5>Would like to add new products? Click Here!</h5>
+					<h5>Would you like to add new products? Click Here!</h5>
 					<AddProductModal
 						input={inputs()}
 						buttonLabel="Add Product"
-						className="modal-style"
+						className="modal-style ml-2"
 						handleAdd={handleAdd}
+						clearInput={handleClearInput}
 					/>
 				</div>
 			</center>

@@ -15,22 +15,13 @@ function AdminHeader(props) {
 	const { logout, cartLength, email } = props;
 	return (
 		<div className="header-right d-flex justify-content-end align-items-center">
-			<div className="d-flex align-items-center">
-				<div className="d-flex mx-3">
-					<Link to="/cart" className="clickable ">
-						<FiShoppingCart />
-					</Link>
-					<span className="badge">{cartLength}</span>
-				</div>
-			</div>
-
 			<UncontrolledDropdown inNavbar>
 				<DropdownToggle
 					caret
 					className="clickable"
 					style={{ backgroundColor: "transparent", border: "none" }}
 				>
-					{email}
+					{email} <span>(Admin)</span>
 				</DropdownToggle>
 				<DropdownMenu right>
 					<DropdownItem>

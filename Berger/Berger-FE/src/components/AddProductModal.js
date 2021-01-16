@@ -2,11 +2,14 @@ import React, { useState } from "react";
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
 
 function AddProductModal(props) {
-	const { buttonLabel, className, input, handleAdd } = props;
+	const { buttonLabel, className, input, handleAdd, clearInput } = props;
 
 	const [modal, setModal] = useState(false);
 
-	const toggle = () => setModal(!modal);
+	const toggle = () => {
+		setModal(!modal);
+		clearInput();
+	};
 	const toggleAdd = () => {
 		handleAdd();
 		setModal(!modal);

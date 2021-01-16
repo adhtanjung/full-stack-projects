@@ -60,34 +60,63 @@ export const keepLoginAction = (id) => {
 	};
 };
 export const changeUserEmailAction = (email, id) => {
-	return (dispatch) => {
-		axios
-			.get(`${api_url}/users?email=${email}`)
-			.then((res) => {
-				if (res.data.length > 0) {
-					swal({
-						title: "oops email has already taken",
-						icon: "warning",
-					});
-				} else {
-					axios
-						.patch(`${api_url}/users/${id}`, { email: email })
-						.then((res) => {
-							dispatch({
-								type: "LOGIN",
-								payload: res.data,
-							});
-							swal({
-								title: "Email has changed.",
-								icon: "success",
-							});
-							window.location.href = "/";
-						})
-						.catch((err) => {
-							console.log(err);
-						});
-				}
-			})
-			.catch((err) => {});
+	return async (dispatch) => {
+		try {
+			const users = await axios.get(`${api_url}/users?email=${email}`);
+			if (users.data.length > 0) {
+				swal({
+					title: "oops email has already taken",
+					icon: "warning",
+				});
+			} else {
+				const userspatch = await axios.patch(`${api_url}/users/${id}`, {
+					email: email,
+				});
+				dispatch({
+					type: "LOGIN",
+					payload: userspatch.data,
+				});
+				swal({
+					title: "Email has changed. You'll be redirected to home in 2 seconds",
+					icon: "success",
+				});
+				setTimeout(() => {
+					window.location.href = "/";
+				}, 2000);
+			}
+		} catch (err) {
+			console.log(err);
+		}
+		// axios
+		// 	.get(`${api_url}/users?email=${email}`)
+		// 	.then((res) => {
+		// 		if (res.data.length > 0) {
+		// 			swal({
+		// 				title: "oops email has already taken",
+		// 				icon: "warning",
+		// 			});
+		// 		} else {
+		// 			axios
+		// 				.patch(`${api_url}/users/${id}`, { email: email })
+		// 				.then((res) => {
+		// 					dispatch({
+		// 						type: "LOGIN",
+		// 						payload: res.data,
+		// 					});
+		// 					swal({
+		// 						title:
+		// 							"Email has changed. You'll be redirected to home in 2 seconds",
+		// 						icon: "success",
+		// 					});
+		// 					setTimeout(() => {
+		// 						window.location.href = "/";
+		// 					}, 2000);
+		// 				})
+		// 				.catch((err) => {
+		// 					console.log(err);
+		// 				});
+		// 		}
+		// 	})
+		// 	.catch((err) => {});
 	};
 };

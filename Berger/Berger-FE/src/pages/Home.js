@@ -8,6 +8,7 @@ import { Link } from "react-router-dom";
 import swal from "sweetalert";
 import Bounce from "react-reveal/Bounce";
 import gsap from "gsap";
+import { Spinner } from "reactstrap";
 
 function Home(props) {
 	const [disabled] = useState(false);
@@ -126,6 +127,9 @@ function Home(props) {
 			return <h2>Select your category!</h2>;
 		}
 	};
+	if (props.loading) {
+		return <Spinner type="grow" />;
+	}
 	return (
 		<div
 			className="d-flex p-3 align-items-center justify-content-center main-body "
@@ -187,6 +191,7 @@ const mapStateToProps = ({ product, user }) => {
 	return {
 		productList: product.productList,
 		userID: user.id,
+		loading: product.loading,
 	};
 };
 export default connect(mapStateToProps, {

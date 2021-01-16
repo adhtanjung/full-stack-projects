@@ -16,6 +16,13 @@ router.get("/", (req, res) => {
 				return res.status(200).send(data);
 			}
 		);
+	} else if (req.query.email) {
+		db.query(`${sql} WHERE email='${req.query.email}'`, (err, data) => {
+			if (err) {
+				return res.status(500).send(err.message);
+			}
+			return res.status(200).send(data);
+		});
 	} else {
 		db.query(sql, (err, data) => {
 			if (err) {
@@ -55,6 +62,24 @@ router.post("/", (req, res) => {
 				id: data.insertId,
 				email: email,
 			});
+		}
+	);
+});
+
+// PATCH USER DATA
+router.patch("/:id", (req, res) => {
+	const id = req.params.id;
+	db.query(
+		`UPDATE users SET email='${req.body.email}' WHERE id=${id}`,
+		(err, data) => {
+			if (err) {
+				return res.status(500).send(err.message);
+			}
+			db.query(`SELECT * FROM users WHERE id=${id}`, (err, data) => {
+				return res.status(201).send(data[0]);
+			});
+
+			// return res.status(201).send({ message: "created" });
 		}
 	);
 });
