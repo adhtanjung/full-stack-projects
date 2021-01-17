@@ -69,19 +69,35 @@ router.post("/", (req, res) => {
 // PATCH USER DATA
 router.patch("/:id", (req, res) => {
 	const id = req.params.id;
-	db.query(
-		`UPDATE users SET email='${req.body.email}' WHERE id=${id}`,
-		(err, data) => {
-			if (err) {
-				return res.status(500).send(err.message);
-			}
-			db.query(`SELECT * FROM users WHERE id=${id}`, (err, data) => {
-				return res.status(201).send(data[0]);
-			});
+	if (req.body.email) {
+		db.query(
+			`UPDATE users SET email='${req.body.email} WHERE id=${id}`,
+			(err, data) => {
+				if (err) {
+					return res.status(500).send(err.message);
+				}
+				db.query(`SELECT * FROM users WHERE id=${id}`, (err, data) => {
+					return res.status(201).send(data[0]);
+				});
 
-			// return res.status(201).send({ message: "created" });
-		}
-	);
+				// return res.status(201).send({ message: "created" });
+			}
+		);
+	} else if (req.body.password) {
+		db.query(
+			`UPDATE users SET password ='${req.body.password}' WHERE id=${id}`,
+			(err, data) => {
+				if (err) {
+					return status(500).send(err.message);
+				}
+				db.query(`SELECT * FROM users WHERE id=${id}`, (err, data) => {
+					return res.status(201).send(data[0]);
+				});
+			}
+		);
+	}
 });
+
+// PATCH USER DATA
 
 module.exports = router;

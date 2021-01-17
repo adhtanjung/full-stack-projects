@@ -9,11 +9,15 @@ import swal from "sweetalert";
 import Bounce from "react-reveal/Bounce";
 import gsap from "gsap";
 import { Spinner } from "reactstrap";
+import spinnerGif from "../components/Rolling-1s-200px.svg";
+import CategoryDetail from "../components/CategoryDetail";
+import LightSpeed from "react-reveal/LightSpeed";
 
 function Home(props) {
 	const [disabled] = useState(false);
 	const [getProducts, setGetProducts] = useState([]);
 	const [selectedCategory, setSelectedCategory] = useState(0);
+	const [onLoad, setOnLoad] = useState(false);
 
 	// const disable = () => {
 	// 	setDisabled(!disabled);
@@ -65,10 +69,11 @@ function Home(props) {
 							<Link to={`/product-detail?${val.id}`}>
 								<div>
 									<img
-										src={val.image}
+										src={onLoad ? val.image : spinnerGif}
 										alt="img not found"
-										height="130px"
-										width="170px"
+										height={onLoad ? "130px" : ""}
+										width={onLoad ? "170px" : "30px"}
+										onLoad={() => setOnLoad(true)}
 									/>
 								</div>
 							</Link>
@@ -103,87 +108,93 @@ function Home(props) {
 					.then((res) => {
 						setGetProducts(res.data);
 					})
-					.catch((err) => {});
+					.catch((err) => {
+						console.log(err);
+					});
 			} else {
 				axios
 					.get(`${api_url}/products?category=${i}`)
 					.then((res) => {
 						setGetProducts(res.data);
 					})
-					.catch((err) => {});
+					.catch((err) => {
+						console.log(err);
+					});
 			}
 		}
 	};
-	const categoryDetail = () => {
-		if (selectedCategory === 1 && getProducts.length !== 0) {
-			return <h2>Pick your favorite burger from all sizes!</h2>;
-		} else if (selectedCategory === 2 && getProducts.length !== 0) {
-			return <h2>Best option if you wanna stay sharp and lean!</h2>;
-		} else if (selectedCategory === 3 && getProducts.length !== 0) {
-			return <h2>The safe option that everyone loves!</h2>;
-		} else if (selectedCategory === 4 && getProducts.length !== 0) {
-			return <h2>GO WILD!</h2>;
-		} else {
-			return <h2>Select your category!</h2>;
-		}
-	};
+
 	if (props.loading) {
 		return <Spinner type="grow" />;
 	}
 	return (
 		<div
-			className="d-flex p-3 align-items-center justify-content-center main-body "
+			className="d-flex p-3 align-items-center justify-content-center main-body pt-5 pl-5"
 			style={{ width: "100%", height: "auto", paddingTop: "40px" }}
 		>
 			<div className="d-flex w-50 flex-column">
-				<p
-					className="clickable clickable-category"
-					onClick={() => filterCategory(1)}
-					onMouseOver={(e) => handleHover(e)}
-					onMouseOut={(e) => handleExit(e)}
-				>
-					All Burgers
-				</p>
+				<LightSpeed left>
+					<p
+						className="clickable clickable-category"
+						onClick={() => filterCategory(1)}
+						onMouseOver={(e) => handleHover(e)}
+						onMouseOut={(e) => handleExit(e)}
+					>
+						All Burgers
+					</p>
+				</LightSpeed>
 				<div className="d-flex flex-wrap ">
 					{selectedCategory === 1 ? renderProducts() : null}
 				</div>
+				<LightSpeed left>
+					<p
+						className="clickable clickable-category"
+						onClick={() => filterCategory(2)}
+						disabled={disabled}
+						onMouseOver={(e) => handleHover(e)}
+						onMouseOut={(e) => handleExit(e)}
+					>
+						Small Burgers
+					</p>
+				</LightSpeed>
 
-				<p
-					className="clickable clickable-category"
-					onClick={() => filterCategory(2)}
-					disabled={disabled}
-					onMouseOver={(e) => handleHover(e)}
-					onMouseOut={(e) => handleExit(e)}
-				>
-					Small Burgers
-				</p>
-				<div className="d-flex flex-wrap justify-content-center">
+				<div className="d-flex flex-wrap">
 					{selectedCategory === 2 ? renderProducts() : null}
 				</div>
-				<p
-					className="clickable clickable-category "
-					onClick={() => filterCategory(3)}
-					onMouseOver={(e) => handleHover(e)}
-					onMouseOut={(e) => handleExit(e)}
-				>
-					Medium Burgers
-				</p>
-				<div className="d-flex flex-wrap justify-content-center">
+				<LightSpeed left>
+					<p
+						className="clickable clickable-category "
+						onClick={() => filterCategory(3)}
+						onMouseOver={(e) => handleHover(e)}
+						onMouseOut={(e) => handleExit(e)}
+					>
+						Medium Burgers
+					</p>
+				</LightSpeed>
+
+				<div className="d-flex flex-wrap">
 					{selectedCategory === 3 ? renderProducts() : null}
 				</div>
-				<p
-					className="clickable clickable-category"
-					onClick={() => filterCategory(4)}
-					onMouseOver={(e) => handleHover(e)}
-					onMouseOut={(e) => handleExit(e)}
-				>
-					Large Burger
-				</p>
-				<div className="d-flex flex-wrap justify-content-center">
+				<LightSpeed left>
+					<p
+						className="clickable clickable-category"
+						onClick={() => filterCategory(4)}
+						onMouseOver={(e) => handleHover(e)}
+						onMouseOut={(e) => handleExit(e)}
+					>
+						Large Burger
+					</p>
+				</LightSpeed>
+				<div className="d-flex flex-wrap">
 					{selectedCategory === 4 ? renderProducts() : null}
 				</div>
 			</div>
-			<div>{categoryDetail()}</div>
+			<div className="d-flex w-50 justify-content-center">
+				<CategoryDetail
+					selectedCategory={selectedCategory}
+					getProducts={getProducts}
+				/>
+			</div>
 		</div>
 	);
 }

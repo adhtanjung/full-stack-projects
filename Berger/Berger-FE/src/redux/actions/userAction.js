@@ -120,3 +120,26 @@ export const changeUserEmailAction = (email, id) => {
 		// 	.catch((err) => {});
 	};
 };
+
+export const changerUserPasswordAction = (email, password) => {
+	return async (dispatch) => {
+		try {
+			const data = await axios.get(
+				`${api_url}/users?email=${email}&password=${password}`
+			);
+
+			if (data.length === 0) {
+				alert("incorrect password");
+			} else {
+				const data2 = await axios.patch(`${api_url}/users?${data[0].id}`, {
+					password: password,
+				});
+
+				dispatch({
+					type: "LOGIN",
+					payload: data2.data,
+				});
+			}
+		} catch (err) {}
+	};
+};
