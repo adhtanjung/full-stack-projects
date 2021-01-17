@@ -71,7 +71,7 @@ router.patch("/:id", (req, res) => {
 	const id = req.params.id;
 	if (req.body.email) {
 		db.query(
-			`UPDATE users SET email='${req.body.email} WHERE id=${id}`,
+			`UPDATE users SET email='${req.body.email}' WHERE id=${id}`,
 			(err, data) => {
 				if (err) {
 					return res.status(500).send(err.message);

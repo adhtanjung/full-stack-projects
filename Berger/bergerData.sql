@@ -80,7 +80,7 @@ CREATE TABLE `products` (
   `category` int NOT NULL,
   `price` int NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=802 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=803 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -89,7 +89,7 @@ CREATE TABLE `products` (
 
 LOCK TABLES `products` WRITE;
 /*!40000 ALTER TABLE `products` DISABLE KEYS */;
-INSERT INTO `products` VALUES (2,'jawholesa','http://www.pngall.com/wp-content/uploads/2016/05/Burger-Free-PNG-Image.png',3,39000),(3,'onager','http://www.pngall.com/wp-content/uploads/2016/05/Burger-PNG-Clipart.png',2,24900),(4,'sard','http://www.pngall.com/wp-content/uploads/5/Hamburger-PNG-Image.png',2,29000),(5,'helminth','http://www.pngall.com/wp-content/uploads/5/Barbecue-Hamburger-PNG-Image.png',3,49000),(6,'bombic','https://assets.stickpng.com/images/5882488ae81acb96424ffaaf.png',4,79000),(800,'malmsey','http://www.pngall.com/wp-content/uploads/5/Barbecue-Hamburger-Transparent.png',4,69000),(801,'product_name','product_image',2,89999);
+INSERT INTO `products` VALUES (2,'jawhole','http://www.pngall.com/wp-content/uploads/2016/05/Burger-Free-PNG-Image.png',3,39000),(3,'onager','http://www.pngall.com/wp-content/uploads/2016/05/Burger-PNG-Clipart.png',2,24900),(4,'sard','http://www.pngall.com/wp-content/uploads/5/Hamburger-PNG-Image.png',2,29000),(5,'helminth','http://www.pngall.com/wp-content/uploads/5/Barbecue-Hamburger-PNG-Image.png',3,49000),(6,'bombic','https://assets.stickpng.com/images/5882488ae81acb96424ffaaf.png',4,79000),(800,'malmsey','http://www.pngall.com/wp-content/uploads/5/Barbecue-Hamburger-Transparent.png',4,69000),(801,'product_name','product_image',2,89999);
 /*!40000 ALTER TABLE `products` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -130,7 +130,7 @@ CREATE TABLE `users` (
   `password` varchar(1000) NOT NULL,
   `role_id` int NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -139,7 +139,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (1,'adhtanjung@gmail.com','cfe731c45250f8ff9a60a458a82b691b838e69cf327309363a58d2ce5860038f',1),(19,'asd@mail.com','54d5cb2d332dbdb4850293caae4559ce88b65163f1ea5d4e4b3ac49d772ded14',2),(20,'sss@mail.com','cfe731c45250f8ff9a60a458a82b691b838e69cf327309363a58d2ce5860038f',2);
+INSERT INTO `users` VALUES (1,'adhtanjung@gmail.com','cfe731c45250f8ff9a60a458a82b691b838e69cf327309363a58d2ce5860038f',1),(23,'adhi1@mail.com','cfe731c45250f8ff9a60a458a82b691b838e69cf327309363a58d2ce5860038f',2);
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -152,4 +152,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-01-16 16:54:40
+-- Dump completed on 2021-01-18  0:43:01

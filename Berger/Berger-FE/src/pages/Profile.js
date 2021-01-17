@@ -5,6 +5,9 @@ import {
 	changeUserEmailAction,
 	changerUserPasswordAction,
 } from "../redux/actions";
+import SHA256 from "crypto-js/sha256";
+
+// TODO: NEED TO SEPARATE SOME FUNCTIONS IN ORDER TO OBTAIN CLEANER LOOKING CODES
 
 function Profile(props) {
 	const [email, setEmail] = useState(props.userEmail);
@@ -13,36 +16,44 @@ function Profile(props) {
 		newPassword: "",
 	});
 	const [toggleEmail, setToggleEmail] = useState(true);
-	const [togglePassword, setTogglePassowd] = useState(true);
 
 	const handlePassword = (e) => {
 		setPassword({ ...password, [e.target.id]: e.target.value });
 	};
+
 	const handleEmail = (e) => {
 		setEmail(e.target.value);
 	};
+
 	const disableEmail = (e) => {
 		setToggleEmail(!toggleEmail);
 		e.preventDefault();
 	};
-	const handleSubmit = (e) => {
+
+	const handleEmailSubmit = (e) => {
 		e.preventDefault();
 		if (email !== props.userEmail) {
 			props.changeUserEmailAction(email, props.userID);
+		} else {
+			alert("you changed nothing");
 		}
-		props.changerUserPasswordAction();
 	};
+
+	const handlePasswordSubmit = (e) => {
+		e.preventDefault();
+		props.changerUserPasswordAction(email, password);
+
+		console.log(SHA256(password.currentPassword).toString());
+	};
+
 	useEffect(() => {
 		setEmail(props.userEmail);
 	}, [props.userEmail]);
-	console.log(email);
-	console.log(password);
-	// ! BLM SELESAI
-	// TODO: PISAHIN FORM NYA BIKIN JADI 2
+
 	return (
 		<div className="container container-card">
 			<h1 style={{ color: "#f64b3c" }}>Your Personal Information</h1>
-			<Form onSubmit={handleSubmit} className="mt-3">
+			<Form onSubmit={handleEmailSubmit} className="mt-3">
 				<FormGroup
 					style={{
 						border: "1px solid black",
@@ -82,11 +93,17 @@ function Profile(props) {
 						/>
 					</div>
 					<center>
-						<Button color="warning" className="w-100 my-3">
+						<Button
+							color="warning"
+							className="w-100 my-3"
+							disabled={props.userEmail === email}
+						>
 							Submit
 						</Button>
 					</center>
 				</FormGroup>
+			</Form>
+			<Form onSubmit={handlePasswordSubmit} className="mt-3">
 				<FormGroup
 					style={{
 						border: "1px solid black",
@@ -108,18 +125,10 @@ function Profile(props) {
 						Password
 					</Label>
 					<div className="d-flex flex-column mb-3">
-						{/* <Button
-							style={{ fontSize: "12px", width: "200px", marginRight: "10px" }}
-							onClick={disablePassword}
-							color="danger"
-						>
-							Change my password
-						</Button> */}
 						<p>Type your current password here</p>
 						<Input
 							type="password"
 							name="password"
-							id="examplePassword"
 							placeholder="current password"
 							className="disabled-input mb-3"
 							onChange={handlePassword}
@@ -131,7 +140,6 @@ function Profile(props) {
 						<Input
 							type="password"
 							name="password"
-							id="examplePassword"
 							placeholder="new password"
 							className="disabled-input"
 							onChange={handlePassword}
