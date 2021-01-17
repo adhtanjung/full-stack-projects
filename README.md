@@ -1,5 +1,6 @@
 # full-stack-projects
-Fully functional websites coded with ReactJS, ExpressJS &amp; MySql
+Fully functioning websites coded with ReactJS, ExpressJS &amp; MySql
 
 -- Under development --
+<br/>
 -- currently working on add to cart fucntion
