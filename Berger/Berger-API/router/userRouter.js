@@ -41,7 +41,6 @@ router.get("/:id", (req, res) => {
 		if (err) {
 			return res.status(500).send(err.message);
 		}
-		console.log(data[0].email);
 		return res.status(200).send({ id: data[0].id, email: data[0].email });
 	});
 });

@@ -2,6 +2,10 @@ const express = require("express");
 const router = express.Router();
 const db = require("../database");
 const _ = require("lodash");
+const { uploader } = require("../helpers");
+const path = "/products";
+const upload = uploader(path, "PRD").fields([{ name: "image" }]);
+const fs = require("fs");
 
 // GET PRODUCTS DATA
 router.get("/", (req, res) => {
@@ -40,19 +44,25 @@ router.get("/:id", (req, res) => {
 
 // POST NEW PRODUCT
 router.post("/", (req, res) => {
-	const { name, image, category, price } = req.body;
-	db.query(
-		`INSERT INTO products (name,image,category,price) VALUES ('${name}','${image}',${category},${price})`,
-		(err, data) => {
-			if (err) {
-				return res.status(500).send(err.message);
-			}
-			return res.status(201).send({
-				id: data.insertId,
-				...req.body,
-			});
-		}
-	);
+	try {
+		upload(req, res, (err) => {
+			const { name, category, price } = JSON.parse(req.body.data);
+			const { image } = req.files;
+			const imagePath = image ? `${path}/${image[0].filename}` : null;
+			db.query(
+				`INSERT INTO products (name,image,category,price,imagepath) VALUES ('${name}','${imagePath}',${category},${price},'${imagePath}')`,
+				(err, data) => {
+					if (err) {
+						return res.status(500).send(err.message);
+					}
+					return res.status(201).send({ message: "posted" });
+				}
+			);
+		});
+	} catch (err) {
+		console.log(err);
+		return res.status(500).send(err);
+	}
 });
 
 // DELETE PRODUCT
@@ -71,18 +81,37 @@ router.delete("/:id", (req, res) => {
 
 // EDIT PRODUCT
 router.patch("/:id", (req, res) => {
-	const id = req.params.id;
-	const { name, image, category, price } = req.body;
-	db.query(
-		`UPDATE products SET name='${name}', image='${image}',category=${category},price=${price} WHERE id=${id}`,
-		req.body,
-		(err, data) => {
+	try {
+		const id = req.params.id;
+
+		db.query(`SELECT * FROM products WHERE id=${id}`, (err, data) => {
 			if (err) {
 				return res.status(500).send(err.message);
 			}
-			return res.status(201).send(data);
-		}
-	);
+			const oldImagePath = data[0].imagepath;
+			upload(req, res, (err) => {
+				console.log(err);
+				const { name, category, price } = JSON.parse(req.body.data);
+				const { image } = req.files;
+				const imagePath = image ? `${path}/${image[0].filename}` : oldImagePath;
+				db.query(
+					`UPDATE products SET name='${name}', image='${imagePath}',category=${category},price=${price}, imagepath='${imagePath}' WHERE id=${id}`,
+					(err, data) => {
+						if (err) {
+							return res.status(500).send(err.message);
+						}
+						return res.status(201).send(data);
+					}
+				);
+				if (image) {
+					fs.unlinkSync(`public${oldImagePath}`);
+				}
+			});
+		});
+	} catch (err) {
+		console.log(err);
+		return res.status(500).send(err);
+	}
 });
 
 module.exports = router;

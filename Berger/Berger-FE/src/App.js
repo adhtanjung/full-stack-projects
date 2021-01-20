@@ -21,7 +21,7 @@ function App(props) {
 			}
 			props.keepLoginAction(id);
 		}
-	}, []);
+	}, [props, props.userID]);
 
 	return (
 		<div className="appjs">

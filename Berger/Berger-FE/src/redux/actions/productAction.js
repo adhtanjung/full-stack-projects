@@ -17,6 +17,9 @@ export const fetchProductsAction = () => {
 				type: "FETCH_PRODUCTS",
 				payload: products.data,
 			});
+			dispatch({
+				type: API_PRODUCT_SUCCESS,
+			});
 		} catch (err) {
 			console.log(err);
 			dispatch({
@@ -24,28 +27,27 @@ export const fetchProductsAction = () => {
 				payload: err,
 			});
 		}
-		dispatch({
-			type: API_PRODUCT_SUCCESS,
-		});
-		// axios
-		// 	.get(`${api_url}/products`)
-		// 	.then((res) => {
-		// 		dispatch({
-		// 			type: "FETCH_PRODUCTS",
-		// 			payload: res.data,
-		// 		});
-		// 	})
-		// 	.catch((err) => {
-		// 		console.log(err);
-		// 	});
 	};
 };
 export const addProductAction = (data) => {
 	return async (dispatch) => {
 		try {
-			await axios.post(`${api_url}/products`, data);
+			let { name, image, category, price, file } = data;
+			const value = JSON.stringify({ name, image, category, price });
+			const formData = new FormData();
+
+			formData.append("data", value);
+			formData.append("image", file.image);
+
+			const headers = {
+				headers: {
+					"Content-Type": "multipart/form-data",
+				},
+			};
+
+			await axios.post(`${api_url}/products`, formData, headers);
 		} catch (err) {
-			console.log(err);
+			console.log(err, "error");
 		}
 		dispatch(fetchProductsAction());
 	};
@@ -62,10 +64,22 @@ export const deleteProductAction = (id) => {
 	};
 };
 
-export const editProductAction = (data, id) => {
+export const editProductAction = (data, index) => {
 	return async (dispatch) => {
 		try {
-			await axios.patch(`${api_url}/products/${id}`, data);
+			const { id, name, category, price, file } = data;
+			const value = JSON.stringify({ id, name, category, price });
+			const formData = new FormData();
+			formData.append("image", file.image);
+			formData.append("data", value);
+
+			const headers = {
+				headers: {
+					"Content-Type": "multipart/form-data",
+				},
+			};
+
+			await axios.patch(`${api_url}/products/${index}`, formData, headers);
 		} catch (err) {
 			console.log(err);
 		}

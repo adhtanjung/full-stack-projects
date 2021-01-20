@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import { Redirect } from "react-router-dom";
-import { Button, Input, Table } from "reactstrap";
+import { Table } from "reactstrap";
 import AddProductModal from "../components/AddProductModal";
 import {
 	addProductAction,
@@ -9,19 +9,23 @@ import {
 	deleteProductAction,
 	editProductAction,
 } from "../redux/actions";
+import ManageDataProducts from "../components/ManageDataProducts";
+import AddProductInput from "../components/AddProductInput";
+import swal from "sweetalert";
 
 let input = {
 	name: "",
 	image: "",
 	category: 0,
 	price: 0,
+	file: { label: "Choose File", image: null },
 };
 let input2 = {
 	id: 0,
 	name: "",
-	image: "",
 	category: 0,
 	price: 0,
+	file: { label: "Choose File", image: undefined },
 };
 function ManageData(props) {
 	const [productInput, setproductInput] = useState(input);
@@ -30,94 +34,21 @@ function ManageData(props) {
 
 	useEffect(() => {
 		props.fetchProductsAction();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
-
-	// RENDER PRODUCTS
-	const renderProduct = () => {
-		const { productList } = props;
-
-		return productList.map((val, index) => {
-			if (selected === index) {
-				return (
-					<tr>
-						<td>
-							<td>{val.id}</td>
-						</td>
-						<td>
-							<Input
-								type="text"
-								onChange={handleEditInput}
-								id="name"
-								value={productEditInput.name}
-							/>
-						</td>
-						<td>
-							<Input
-								type="text"
-								onChange={handleEditInput}
-								id="image"
-								value={productEditInput.image}
-							/>
-						</td>
-						<td>
-							<Input
-								type="text"
-								onChange={handleEditInput}
-								id="category"
-								value={productEditInput.category}
-							/>
-						</td>
-						<td>
-							<Input
-								type="text"
-								onChange={handleEditInput}
-								id="price"
-								value={productEditInput.price}
-							/>
-						</td>
-
-						<td>
-							<Button onClick={() => handleConfirmEdit(val.id)}>Confirm</Button>
-						</td>
-						<td>
-							<Button onClick={handleCancelEdit}>Cancel</Button>
-						</td>
-					</tr>
-				);
-			}
-
-			return (
-				<tr>
-					<td>{val.id}</td>
-					<td>{val.name}</td>
-					<td>
-						<img src={val.image} alt="not found" width="70px" />
-					</td>
-					<td>{val.category}</td>
-					<td>{val.price}</td>
-					<td>
-						<Button onClick={() => handleEdit(index, val)}>Edit</Button>
-					</td>
-					<td>
-						<Button onClick={() => handleDelete(val.id)}>Delete</Button>
-					</td>
-				</tr>
-			);
-		});
-	};
 
 	// EDIT PRODUCT FUNCTIONS
 	////////////////////////////
 	////////////////////////////
 	const handleEdit = (index, val) => {
 		setSelected(index); //set selected product using product's index
-		const { name, image, category, price } = val; // retrieve object keys and destructuring it
+		const { name, category, price } = val; // retrieve object keys and destructuring it
 		setproductEditInput({
 			//set value obtained from above
 			name: name,
-			image: image,
 			category: category,
 			price: price,
+			file: input2.file,
 		});
 	};
 	const handleCancelEdit = () => {
@@ -134,14 +65,46 @@ function ManageData(props) {
 	////////////////////////////
 	////////////////////////////
 	const handleDelete = (id) => {
-		props.deleteProductAction(id);
+		swal({
+			title: "Are you sure?",
+			text: "Once deleted, you will not be able to recover this file!",
+			icon: "warning",
+			buttons: true,
+			dangerMode: true,
+		}).then((willDelete) => {
+			if (willDelete) {
+				props.deleteProductAction(id);
+				swal("Poof! Your imaginary file has been deleted!", {
+					icon: "success",
+				});
+			} else {
+				swal("Your imaginary file is safe!");
+			}
+		});
 	};
 	////////////////////////////
 	////////////////////////////
 
-	// HANDLE INPUT, ADD & EDIT
+	// HANDLE INPUT >> ADD & EDIT
 	////////////////////////////
 	////////////////////////////
+	const handleFileInput = (e) => {
+		if (e.target.id === "addFile") {
+			if (e.target.files) {
+				setproductInput({
+					...productInput,
+					file: { label: e.target.files[0].name, image: e.target.files[0] },
+				});
+			}
+		} else if (e.target.id === "editFile") {
+			if (e.target.files) {
+				setproductEditInput({
+					...productEditInput,
+					file: { label: e.target.files[0].name, image: e.target.files[0] },
+				});
+			}
+		}
+	};
 	const handleInput = (e) => {
 		setproductInput({
 			...productInput,
@@ -162,6 +125,7 @@ function ManageData(props) {
 	////////////////////////////
 	const handleAdd = () => {
 		props.addProductAction(productInput);
+		// ini dikosongin lagi statenya
 		setproductInput(input);
 	};
 	////////////////////////////
@@ -176,64 +140,6 @@ function ManageData(props) {
 	////////////////////////////
 	////////////////////////////
 
-	// INPUT FIELDS GIVEN AS A PROP >> ADD PRODUCT MODAL
-	////////////////////////////
-	////////////////////////////
-	const inputs = () => {
-		return (
-			<div className="d-flex flex-column mb-3">
-				<div>
-					<h6>Product Name</h6>
-					<Input
-						type="text"
-						placeholder="Product_Name"
-						onChange={handleInput}
-						id="name"
-						value={name}
-						className="input-style"
-					/>
-				</div>
-				<div className="my-3">
-					<h6>Product Image</h6>
-					<Input
-						type="text"
-						placeholder="Product_Image"
-						className="input-style"
-						onChange={handleInput}
-						id="image"
-						value={image}
-					/>
-				</div>
-				<div>
-					<h6>Product CategoryID</h6>
-					<Input
-						type="number"
-						placeholder="Product_Category_ID"
-						onChange={handleInput}
-						id="category"
-						value={category}
-						className="input-style"
-					/>
-				</div>
-
-				<div className="my-3">
-					<h6>Product Price</h6>
-					<Input
-						type="number"
-						placeholder="Product_Price"
-						className="input-style"
-						onChange={handleInput}
-						id="price"
-						value={price}
-					/>
-				</div>
-			</div>
-		);
-	};
-	////////////////////////////
-	////////////////////////////
-
-	const { name, image, category, price } = productInput;
 	if (props.userID === 0) {
 		return <Redirect to="/" />;
 	}
@@ -243,11 +149,18 @@ function ManageData(props) {
 				<div className="d-flex rounded-box align-items-center mb-5">
 					<h5>Would you like to add new products? Click Here!</h5>
 					<AddProductModal
-						input={inputs()}
+						input={
+							<AddProductInput
+								handleInput={handleInput}
+								productInput={productInput}
+								handleFileInput={handleFileInput}
+							/>
+						}
 						buttonLabel="Add Product"
 						className="modal-style ml-2"
 						handleAdd={handleAdd}
 						clearInput={handleClearInput}
+						handleFileInput={handleFileInput}
 					/>
 				</div>
 			</center>
@@ -266,7 +179,19 @@ function ManageData(props) {
 							<th colSpan="2">Actions</th>
 						</tr>
 					</thead>
-					<tbody style={{ textAlign: "center" }}>{renderProduct()}</tbody>
+					<tbody style={{ textAlign: "center" }}>
+						<ManageDataProducts
+							productList={props.productList}
+							selected={selected}
+							handleEditInput={handleEditInput}
+							productEditInput={productEditInput}
+							handleConfirmEdit={handleConfirmEdit}
+							handleCancelEdit={handleCancelEdit}
+							handleEdit={handleEdit}
+							handleDelete={handleDelete}
+							handleFileInput={handleFileInput}
+						/>
+					</tbody>
 				</Table>
 			</div>
 		</div>

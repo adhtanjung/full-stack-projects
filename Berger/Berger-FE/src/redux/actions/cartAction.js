@@ -6,13 +6,14 @@ export const fetchCartByUserIdAction = (id) => {
 		axios
 			.get(`${api_url}/cart?userID=${id}`)
 			.then((res) => {
+				console.log(res);
 				dispatch({
 					type: "FETCH_CART_BY_USERID",
 					payload: res.data,
 				});
 			})
 			.catch((err) => {
-				console.log(err);
+				console.log(err, "Looks like your cart is empty");
 			});
 	};
 };

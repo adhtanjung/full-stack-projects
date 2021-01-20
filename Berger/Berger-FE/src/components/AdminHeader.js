@@ -1,5 +1,5 @@
 import React from "react";
-import { FiLogOut, FiShoppingCart } from "react-icons/fi";
+import { FiLogOut } from "react-icons/fi";
 import { RiAccountCircleLine } from "react-icons/ri";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
@@ -12,7 +12,7 @@ import {
 import { addProductAction } from "../redux/actions";
 
 function AdminHeader(props) {
-	const { logout, cartLength, email } = props;
+	const { logout, email } = props;
 	return (
 		<div className="header-right d-flex justify-content-end align-items-center">
 			<UncontrolledDropdown inNavbar>

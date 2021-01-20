@@ -26,8 +26,6 @@ function Login(props) {
 		};
 		props.loginAction(encryptedData);
 		// window.location.reload();
-
-		console.log(props.userID);
 	};
 	if (props.userID !== 0) {
 		return <Redirect to="/" />;

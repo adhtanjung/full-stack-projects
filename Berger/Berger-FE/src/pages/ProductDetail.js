@@ -19,7 +19,7 @@ function ProductDetail(props) {
 				});
 		};
 		fetchProduct();
-	}, []);
+	}, [props.location.search]);
 	const handleAddToCart = () => {
 		const data = {
 			name: product.name,

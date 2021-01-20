@@ -5,7 +5,6 @@ import {
 	changeUserEmailAction,
 	changerUserPasswordAction,
 } from "../redux/actions";
-import SHA256 from "crypto-js/sha256";
 
 // TODO: NEED TO SEPARATE SOME FUNCTIONS IN ORDER TO OBTAIN CLEANER LOOKING CODES
 
@@ -42,8 +41,6 @@ function Profile(props) {
 	const handlePasswordSubmit = (e) => {
 		e.preventDefault();
 		props.changerUserPasswordAction(email, password);
-
-		console.log(SHA256(password.currentPassword).toString());
 	};
 
 	useEffect(() => {

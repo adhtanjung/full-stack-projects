@@ -5,7 +5,6 @@ const db = require("../database");
 // GET CART BY USERID
 router.get("/", (req, res) => {
 	if (req.query.userID) {
-		console.log("masuk");
 		let sql = `SELECT * FROM cart WHERE userID=${req.query.userID}`;
 		db.query(sql, (err, data) => {
 			if (err) {

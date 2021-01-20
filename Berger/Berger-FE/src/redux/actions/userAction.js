@@ -8,7 +8,6 @@ export const signupAction = (data) => {
 		axios
 			.post(`${api_url}/users`, { email: data.email, password: data.password })
 			.then((res) => {
-				console.log(res.data);
 				dispatch({
 					type: "SIGNUP",
 					payload: res.data,
@@ -22,11 +21,9 @@ export const signupAction = (data) => {
 };
 export const loginAction = (data) => {
 	return (dispatch) => {
-		console.log(data.email);
 		axios
 			.get(`${api_url}/users?email=${data.email}&password=${data.password}`)
 			.then((res) => {
-				console.log(res.data);
 				if (res.data.length === 1) {
 					dispatch({
 						type: "LOGIN",
@@ -62,10 +59,8 @@ export const keepLoginAction = (id) => {
 };
 export const changeUserEmailAction = (email, id) => {
 	return async (dispatch) => {
-		console.log(email);
 		try {
 			const users = await axios.get(`${api_url}/users?email=${email}`);
-			console.log(users);
 			if (users.data.length > 0) {
 				swal({
 					title: "oops email has already taken",
