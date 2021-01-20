@@ -1,0 +1,12 @@
+flownya adalah sbb:
+1. function uploader berguna untuk mengupload file(s) ke dlm local(API)
+1.1 ada 2 parameter destination dan filenamePrefix
+1.2 buat function namanaya storage yang panggil function multer.diskStorage
+1.2.1 tentuin destination: mau taro dimana di dlm API>> cb(null/err, dir)
+1.2.2 tentuin filename: nama filenya mau kaya gmn, ambil dari parameter file.originalname>>split(".")>>cb(null, filename) 
+1.3 buat function untuk filterfilename nya, yg akan true jika matched dengan syarat RegExp
+
+2. function uploader dipanggil di dlm router saat berurusan dengan files(post, delete, patch/put)
+2.1 function uploader dijadiin variable >> const upload = uploader("./images", "IMG").fields([{name:"image"}])
+2.2 upload bisa langsung digunakan tanpa harus panggil db.query e.g(upload(req,res,(err)=>{}) 
+2.3 DESTIONATION DI PARAMETER DIGUNAKAN UNTUK MENRNTUKAN PATH FOLDER  DI DLM API NAMUN DIISI SAAT MENGGUNAKAN ROUTER
