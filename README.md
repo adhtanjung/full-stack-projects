@@ -3,4 +3,4 @@ Fully functioning websites coded with ReactJS, ExpressJS &amp; MySql
 
 -- Under development --
 <br/>
--- currently working on add to cart fucntion
+-- <b>TODO:</b>Multer delete, auth, nodemailer, token
