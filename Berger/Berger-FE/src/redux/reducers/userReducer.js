@@ -1,6 +1,8 @@
 const INTIAL_STATE = {
 	id: 0,
 	email: "",
+	role_id: null,
+	isverified: null,
 };
 
 export const userReducer = (state = INTIAL_STATE, action) => {
@@ -18,8 +20,7 @@ export const userReducer = (state = INTIAL_STATE, action) => {
 		case "LOGIN":
 			return {
 				...state,
-				id: action.payload.id,
-				email: action.payload.email,
+				...action.payload,
 			};
 		default:
 			return state;

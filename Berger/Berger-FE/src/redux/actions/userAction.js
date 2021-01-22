@@ -6,13 +6,16 @@ import SHA256 from "crypto-js/sha256";
 export const signupAction = (data) => {
 	return (dispatch) => {
 		axios
-			.post(`${api_url}/users`, { email: data.email, password: data.password })
+			.post(`${api_url}/users/signup`, {
+				email: data.email,
+				password: data.password,
+			})
 			.then((res) => {
 				dispatch({
 					type: "SIGNUP",
 					payload: res.data,
 				});
-				localStorage.setItem("id", res.data.id);
+				localStorage.setItem("token", res.data.token);
 			})
 			.catch((err) => {
 				console.log(err);
@@ -20,23 +23,19 @@ export const signupAction = (data) => {
 	};
 };
 export const loginAction = (data) => {
-	return (dispatch) => {
-		axios
-			.get(`${api_url}/users?email=${data.email}&password=${data.password}`)
-			.then((res) => {
-				if (res.data.length === 1) {
-					dispatch({
-						type: "LOGIN",
-						payload: res.data[0],
-					});
-					localStorage.setItem("id", res.data[0].id);
-				} else {
-					alert("invalid data");
-				}
-			})
-			.catch((err) => {
-				console.log(err);
+	return async (dispatch) => {
+		try {
+			const response = await axios.post(`${api_url}/users/login`, data);
+
+			const { id, email, role_id, isverified, token } = response.data;
+			localStorage.setItem("token", token);
+			dispatch({
+				type: "LOGIN",
+				payload: { id, email, role_id, isverified },
 			});
+		} catch (err) {
+			console.log(err);
+		}
 	};
 };
 export const logoutAction = () => {
@@ -44,17 +43,22 @@ export const logoutAction = () => {
 		type: "LOGOUT",
 	};
 };
-export const keepLoginAction = (id) => {
-	return (dispatch) => {
-		axios
-			.get(`${api_url}/users/${id}`)
-			.then((res) => {
-				dispatch({
-					type: "LOGIN",
-					payload: res.data,
-				});
-			})
-			.catch((err) => {});
+export const keepLoginAction = (token) => {
+	return async (dispatch) => {
+		try {
+			const headers = {
+				headers: {
+					Authorization: `Bearer ${token}`,
+				},
+			};
+			const res = await axios.post(`${api_url}/users/keep-login`, {}, headers);
+			dispatch({
+				type: "LOGIN",
+				payload: res.data,
+			});
+		} catch (err) {
+			console.log(err);
+		}
 	};
 };
 export const changeUserEmailAction = (email, id) => {
@@ -81,44 +85,10 @@ export const changeUserEmailAction = (email, id) => {
 				}).then(() => {
 					dispatch((window.location.href = "/"));
 				});
-				// setTimeout(() => {
-
-				// }, 2000);
 			}
 		} catch (err) {
 			console.log(err);
 		}
-		// axios
-		// 	.get(`${api_url}/users?email=${email}`)
-		// 	.then((res) => {
-		// 		if (res.data.length > 0) {
-		// 			swal({
-		// 				title: "oops email has already taken",
-		// 				icon: "warning",
-		// 			});
-		// 		} else {
-		// 			axios
-		// 				.patch(`${api_url}/users/${id}`, { email: email })
-		// 				.then((res) => {
-		// 					dispatch({
-		// 						type: "LOGIN",
-		// 						payload: res.data,
-		// 					});
-		// 					swal({
-		// 						title:
-		// 							"Email has changed. You'll be redirected to home in 2 seconds",
-		// 						icon: "success",
-		// 					});
-		// 					setTimeout(() => {
-		// 						window.location.href = "/";
-		// 					}, 2000);
-		// 				})
-		// 				.catch((err) => {
-		// 					console.log(err);
-		// 				});
-		// 		}
-		// 	})
-		// 	.catch((err) => {});
 	};
 };
 

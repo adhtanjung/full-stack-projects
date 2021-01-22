@@ -7,10 +7,12 @@ const {
 	productRouter,
 	imageRouter,
 } = require("./router");
+const bearerToken = require("express-bearer-token");
 const port = 2002;
 
 const app = express();
 
+app.use(bearerToken());
 app.use(bodyParser());
 app.use(cors());
 app.use(express.static("public"));

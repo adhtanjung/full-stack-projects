@@ -14,12 +14,12 @@ import { keepLoginAction, fetchCartByUserIdAction } from "./redux/actions";
 
 function App(props) {
 	useEffect(() => {
-		let id = localStorage.getItem("id");
-		if (id) {
-			if (props.userID !== 0) {
-				props.fetchCartByUserIdAction(props.userID);
-			}
-			props.keepLoginAction(id);
+		let token = localStorage.getItem("token");
+		if (token) {
+			// if (props.userID !== 0) {
+			// 	props.fetchCartByUserIdAction(props.userID);
+			// }
+			props.keepLoginAction(token);
 		}
 	}, [props, props.userID]);
 
