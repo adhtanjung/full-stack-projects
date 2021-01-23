@@ -153,16 +153,18 @@ router.get("/:condition", (req, res) => {
 				}
 			);
 		}
+	} else {
+		const id = req.params.condition;
+		let sql = `SELECT * FROM users WHERE id=${id}`;
+		db.query(sql, (err, data) => {
+			if (err) {
+				return res.status(500).send(err.message);
+			}
+		});
 	}
+
 	// console.log("masuk get id");
 	// const id = req.params.id;
-	// let sql = `SELECT * FROM users WHERE id=${id}`;
-	// db.query(sql, (err, data) => {
-	// 	if (err) {
-	// 		return res.status(500).send(err.message);
-	// 	}
-	// 	return res.status(200).send({ id: data[0].id, email: data[0].email });
-	// });
 });
 
 // GET USERS EMAIL THRU QUERY
