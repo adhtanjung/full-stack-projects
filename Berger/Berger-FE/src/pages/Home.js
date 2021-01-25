@@ -10,7 +10,6 @@ import gsap from "gsap";
 import { Spinner } from "reactstrap";
 import spinnerGif from "../components/Rolling-1s-200px.svg";
 import CategoryDetail from "../components/CategoryDetail";
-import LightSpeed from "react-reveal/LightSpeed";
 
 function Home(props) {
 	const [disabled] = useState(false);
@@ -37,11 +36,17 @@ function Home(props) {
 	};
 	const handleAddToCart = (id) => {
 		if (props.userID !== 0) {
-			props.addToCartAction(id);
-			swal({
-				title: "Added to cart!",
-				icon: "success",
-			});
+			if (props.role_id === 2) {
+				props.addToCartAction(id);
+				swal({
+					title: "Added to cart!",
+					icon: "success",
+				});
+			} else if (props.role_id === 1) {
+				swal({
+					title: "Youre admin, lol",
+				});
+			}
 		} else {
 			swal({
 				title: "You need to login first!",
@@ -151,41 +156,35 @@ function Home(props) {
 				</p>
 
 				<div className="d-flex flex-wrap ">{renderProducts(1)}</div>
-				<LightSpeed left>
-					<p
-						className="clickable clickable-category"
-						onClick={() => filterCategory(2)}
-						disabled={disabled}
-						onMouseOver={(e) => handleHover(e)}
-						onMouseOut={(e) => handleExit(e)}
-					>
-						Small Burgers
-					</p>
-				</LightSpeed>
+				<p
+					className="clickable clickable-category"
+					onClick={() => filterCategory(2)}
+					disabled={disabled}
+					onMouseOver={(e) => handleHover(e)}
+					onMouseOut={(e) => handleExit(e)}
+				>
+					Small Burgers
+				</p>
 
 				<div className="d-flex flex-wrap">{renderProducts(2)}</div>
-				<LightSpeed left>
-					<p
-						className="clickable clickable-category "
-						onClick={() => filterCategory(3)}
-						onMouseOver={(e) => handleHover(e)}
-						onMouseOut={(e) => handleExit(e)}
-					>
-						Medium Burgers
-					</p>
-				</LightSpeed>
+				<p
+					className="clickable clickable-category "
+					onClick={() => filterCategory(3)}
+					onMouseOver={(e) => handleHover(e)}
+					onMouseOut={(e) => handleExit(e)}
+				>
+					Medium Burgers
+				</p>
 
 				<div className="d-flex flex-wrap">{renderProducts(3)}</div>
-				<LightSpeed left>
-					<p
-						className="clickable clickable-category"
-						onClick={() => filterCategory(4)}
-						onMouseOver={(e) => handleHover(e)}
-						onMouseOut={(e) => handleExit(e)}
-					>
-						Large Burger
-					</p>
-				</LightSpeed>
+				<p
+					className="clickable clickable-category"
+					onClick={() => filterCategory(4)}
+					onMouseOver={(e) => handleHover(e)}
+					onMouseOut={(e) => handleExit(e)}
+				>
+					Large Burger
+				</p>
 				<div className="d-flex flex-wrap">{renderProducts(4)}</div>
 			</div>
 			<div className="d-flex w-50 justify-content-center">
@@ -202,6 +201,7 @@ const mapStateToProps = ({ product, user }) => {
 		productList: product.productList,
 		userID: user.id,
 		loading: product.loading,
+		role_id: user.role_id,
 	};
 };
 export default connect(mapStateToProps, {

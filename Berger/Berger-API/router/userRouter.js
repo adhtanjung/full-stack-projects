@@ -1,23 +1,29 @@
 const db = require("../database");
 const express = require("express");
+const crypto = require("crypto");
 const router = express.Router();
-const SHA256 = require("crypto-js/sha256");
 const { createJWTToken, checkToken, transporter } = require("../helpers");
 const jwt = require("jsonwebtoken");
-const { route } = require("./cartRouter");
 
 // GET USERS DATA
 router.post("/login", (req, res) => {
 	const { email, password } = req.body;
-	let sql = `SELECT id,email,role_id,isverified FROM users WHERE email='${email}' and password = '${password}'`;
+	const encryptedPassword = crypto
+		.createHmac("sha256", "bergerHash", password)
+		.digest("hex");
+	let sql = `SELECT id,email,role_id,isverified FROM users WHERE email='${email}' and password = '${encryptedPassword}'`;
 	try {
 		db.query(sql, (err, data) => {
-			console.log(data);
-			let responseData = { ...data[0] };
-			const token = createJWTToken(responseData);
-			console.log(responseData);
-			responseData.token = token;
-			return res.status(200).send(responseData);
+			if (err) {
+				return res.status(500).send(err.message);
+			}
+			if (data.length > 0) {
+				let responseData = { ...data[0] };
+				const token = createJWTToken(responseData);
+				responseData.token = token;
+				return res.status(200).send(responseData);
+			}
+			return res.send(data);
 		});
 	} catch (err) {
 		console.log(err);
@@ -40,7 +46,9 @@ router.post("/keep-login", checkToken, (req, res) => {
 // POST NEW USER
 router.post("/signup", (req, res) => {
 	const { email, password } = req.body;
-	const encryptedPassword = SHA256(password).toString();
+	const encryptedPassword = crypto
+		.createHmac("sha256", "bergerHash", password)
+		.digest("hex");
 	try {
 		let sql = `INSERT INTO users`;
 		db.query(
@@ -49,19 +57,18 @@ router.post("/signup", (req, res) => {
 				if (err) {
 					return res.status(500).send(err.message);
 				}
-				console.log(data.insertId);
 				const token = createJWTToken({
 					email,
 					encryptedPassword,
 					id: data.insertId,
+					role_id: 2,
 				});
-				console.log(token);
 				let mailOptions = {
 					from: "Berger.inc <adhtanjung@gmail.com>",
 					to: email,
 					subject: "Email Verification",
 					text: "Halo Dunia!",
-					html: `<a href="http://localhost:2002/users/verification?token=${token}" target="_blank">Click to verify</a>`,
+					html: `<a href="http://localhost:3000/verification?verify=${token}" target="_blank">Click to verify</a>`,
 				};
 
 				transporter.sendMail(mailOptions, (err, res2) => {
@@ -75,6 +82,8 @@ router.post("/signup", (req, res) => {
 				});
 				return res.status(200).send({
 					id: data.insertId,
+					role_id: 2,
+					isverified: 0,
 					email: email,
 					token: token,
 				});
@@ -115,7 +124,6 @@ router.post("/signup", (req, res) => {
 // });
 // GET USER DATA BY ID
 router.get("/:condition", (req, res) => {
-	console.log(req.params.condition);
 	if (req.params.condition === "userdetail") {
 		if (req.query.email) {
 			db.query(
@@ -129,9 +137,7 @@ router.get("/:condition", (req, res) => {
 			);
 		}
 	} else if (req.params.condition === "verification") {
-		console.log("masuk");
 		const { token } = req.query;
-		console.log(token);
 
 		if (token) {
 			const userData = jwt.verify(token, "keyrahasia", (err, decoded) => {
@@ -143,7 +149,6 @@ router.get("/:condition", (req, res) => {
 				}
 				return decoded;
 			});
-			console.log(userData);
 			db.query(
 				`UPDATE users SET isverified =1 WHERE id=${userData.id}`,
 				(err, data) => {
@@ -162,9 +167,6 @@ router.get("/:condition", (req, res) => {
 			}
 		});
 	}
-
-	// console.log("masuk get id");
-	// const id = req.params.id;
 });
 
 // GET USERS EMAIL THRU QUERY
@@ -210,6 +212,45 @@ router.patch("/:id", (req, res) => {
 			}
 		);
 	}
+});
+
+// USER VERIFICATION
+router.post("/verification", checkToken, (req, res) => {
+	console.log("masuk verif");
+	const { id, email, role_id } = req.user;
+	try {
+		db.query(`UPDATE users SET isverified = 1 WHERE id =${id}`, (err, data) => {
+			if (err) {
+				return res.send(err.message);
+			}
+			return res.status(200).send({ id, email, role_id, isverified: 1 });
+		});
+	} catch (err) {
+		console.log(err);
+		return res.send(err);
+	}
+});
+
+// RESEND EMAIL
+router.post("/resend-email", (req, res) => {
+	const { token, email } = req.body;
+	let mailOptions = {
+		from: "Berger.inc <adhtanjung@gmail.com>",
+		to: email,
+		subject: "Email Verification",
+		text: "Halo Dunia!",
+		html: `<a href="http://localhost:3000/verification?verify=${token}" target="_blank">Click to verify</a>`,
+	};
+
+	transporter.sendMail(mailOptions, (err, res2) => {
+		if (err) {
+			console.log("Something's went wrong");
+			res.send("Something's went wrong");
+		} else {
+			console.log("Email sent");
+			res.send("Email sent");
+		}
+	});
 });
 
 module.exports = router;

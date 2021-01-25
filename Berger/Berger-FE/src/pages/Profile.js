@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
+import { Redirect } from "react-router-dom";
 import { Button, Form, FormGroup, Label, Input } from "reactstrap";
 import {
 	changeUserEmailAction,
@@ -46,7 +47,9 @@ function Profile(props) {
 	useEffect(() => {
 		setEmail(props.userEmail);
 	}, [props.userEmail]);
-
+	if (props.userID === 0) {
+		return <Redirect to="/" />;
+	}
 	return (
 		<div className="container container-card">
 			<h1 style={{ color: "#f64b3c" }}>Your Personal Information</h1>

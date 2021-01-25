@@ -10,8 +10,7 @@ export const userReducer = (state = INTIAL_STATE, action) => {
 		case "SIGNUP":
 			return {
 				...state,
-				id: action.payload.id,
-				email: action.payload.email,
+				...action.payload,
 			};
 		case "LOGOUT":
 			return {

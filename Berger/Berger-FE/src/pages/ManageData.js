@@ -15,9 +15,8 @@ import swal from "sweetalert";
 
 let input = {
 	name: "",
-	image: "",
-	category: 0,
-	price: 0,
+	category: null,
+	price: null,
 	file: { label: "Choose File", image: null },
 };
 let input2 = {

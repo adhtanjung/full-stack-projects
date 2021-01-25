@@ -19,7 +19,11 @@ function AdminHeader(props) {
 				<DropdownToggle
 					caret
 					className="clickable"
-					style={{ backgroundColor: "transparent", border: "none" }}
+					style={{
+						backgroundColor: "transparent",
+						border: "none",
+						fontSize: "1.2vw",
+					}}
 				>
 					{email} <span>(Admin)</span>
 				</DropdownToggle>

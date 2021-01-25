@@ -59,7 +59,7 @@ $text-color: #fdba9a;
 	}
 }
 .clickable-category {
-	font-size: 60px;
+	font-size: 3.9vw !important;
 	width: auto;
 }
 
@@ -132,3 +132,10 @@ $text-color: #fdba9a;
 		box-shadow: 1px 0px 8px 0px #fdba9a !important;
 	}
 }
+
+// .image-product-responsive {
+// 	width: 100%;
+// 	max-width: 240px;
+// 	height: 200px;
+// 	max-height: 240px;
+// }

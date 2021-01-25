@@ -3,7 +3,6 @@ import { connect } from "react-redux";
 import { Link, Redirect } from "react-router-dom";
 import { Input, Button } from "reactstrap";
 import { loginAction, fetchCartByUserIdAction } from "../redux/actions";
-import SHA256 from "crypto-js/sha256";
 
 const loginInfo = {
 	email: "",
@@ -22,7 +21,7 @@ function Login(props) {
 		e.preventDefault();
 		const encryptedData = {
 			email: login.email,
-			password: SHA256(login.password).toString(),
+			password: login.password,
 		};
 		props.loginAction(encryptedData);
 		// window.location.reload();

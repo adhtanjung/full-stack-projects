@@ -9,8 +9,12 @@
 
 // console.log(form);
 
-let image = "gambar.jpasdg";
+// let image = "gambar.jpasdg";
 
-const regex = /\.(gif|jpe?g|tiff?|png|webp|bmp)$/i;
-console.log(image.match(regex));
-console.log(regex.test(image));
+// const regex = /\.(gif|jpe?g|tiff?|png|webp|bmp)$/i;
+// console.log(image.match(regex));
+// console.log(regex.test(image));
+
+const crypto = require("crypto");
+const password = "Asd12345";
+console.log(crypto.createHmac("sha256", "bergerHash", password).digest("hex"));

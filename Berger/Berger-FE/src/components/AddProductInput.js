@@ -17,17 +17,17 @@ function AddProductInput(props) {
 						className="input-style"
 					/>
 				</div>
-				<div className="my-3">
-					<Label>Product Image</Label>
-					<Input
+				{/* <div className="my-3">
+					<Label>Product Image</Label> */}
+				{/* <Input
 						type="text"
 						placeholder="Product_Image"
 						className="input-style"
 						onChange={handleInput}
 						id="image"
 						value={productInput.image}
-					/>
-				</div>
+					/> */}
+				{/* </div> */}
 				<div>
 					<Label>Product CategoryID</Label>
 					<Input

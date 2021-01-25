@@ -6,16 +6,29 @@ import SHA256 from "crypto-js/sha256";
 export const signupAction = (data) => {
 	return (dispatch) => {
 		axios
-			.post(`${api_url}/users/signup`, {
-				email: data.email,
-				password: data.password,
-			})
+			.get(`${api_url}/users/userdetail?email=${data.email}`)
 			.then((res) => {
-				dispatch({
-					type: "SIGNUP",
-					payload: res.data,
-				});
-				localStorage.setItem("token", res.data.token);
+				if (res.data.length === 0) {
+					axios
+						.post(`${api_url}/users/signup`, {
+							email: data.email,
+							password: data.password,
+						})
+						.then((res) => {
+							dispatch({
+								type: "SIGNUP",
+								payload: res.data,
+							});
+							localStorage.setItem("token", res.data.token);
+						})
+						.catch((err) => {
+							console.log(err);
+						});
+				} else {
+					swal({
+						title: "Email already taken",
+					});
+				}
 			})
 			.catch((err) => {
 				console.log(err);
@@ -27,12 +40,16 @@ export const loginAction = (data) => {
 		try {
 			const response = await axios.post(`${api_url}/users/login`, data);
 
-			const { id, email, role_id, isverified, token } = response.data;
-			localStorage.setItem("token", token);
-			dispatch({
-				type: "LOGIN",
-				payload: { id, email, role_id, isverified },
-			});
+			if (response.data.length === 0) {
+				alert("User not found");
+			} else {
+				const { id, email, role_id, isverified, token } = response.data;
+				localStorage.setItem("token", token);
+				dispatch({
+					type: "LOGIN",
+					payload: { id, email, role_id, isverified },
+				});
+			}
 		} catch (err) {
 			console.log(err);
 		}
@@ -64,7 +81,9 @@ export const keepLoginAction = (token) => {
 export const changeUserEmailAction = (email, id) => {
 	return async (dispatch) => {
 		try {
-			const users = await axios.get(`${api_url}/users?email=${email}`);
+			const users = await axios.get(
+				`${api_url}/users/userdetail?email=${email}`
+			);
 			if (users.data.length > 0) {
 				swal({
 					title: "oops email has already taken",
@@ -125,6 +144,41 @@ export const changerUserPasswordAction = (email, password) => {
 					});
 				}
 			} catch (err) {}
+		}
+	};
+};
+
+export const userVerificationAction = (token) => {
+	return async (dispatch) => {
+		try {
+			console.log(token);
+			const headers = {
+				headers: {
+					Authorization: `Bearer ${token}`,
+				},
+			};
+			const res = await axios.post(
+				`${api_url}/users/verification`,
+				{},
+				headers
+			);
+			console.log(res.data);
+			dispatch({
+				type: "LOGIN",
+				payload: res.data,
+			});
+		} catch (err) {
+			console.log(err);
+		}
+	};
+};
+
+export const resendEmailAction = (email, token) => {
+	return async (dispatch) => {
+		try {
+			await axios.post(`${api_url}/users/resend-email`, { email, token });
+		} catch (err) {
+			console.log(err);
 		}
 	};
 };

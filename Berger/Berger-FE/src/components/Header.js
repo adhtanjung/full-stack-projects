@@ -40,9 +40,9 @@ function Header(props) {
 		<div className="d-flex align-items-center justify-content-between p-3 main-header">
 			<div className="header-left d-flex">
 				<Link to="/" className="clickable">
-					<h3 style={{ fontWeight: "bolder" }}>
+					<label style={{ fontWeight: "bolder", fontSize: "2vw" }}>
 						<b>berger.</b>
-					</h3>
+					</label>
 				</Link>
 			</div>
 			{props.id !== 0 ? (

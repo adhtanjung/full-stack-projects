@@ -1,6 +1,14 @@
-let loginInfo = {
-	email: "",
-	password: "",
+// let loginInfo = {
+// 	email: "",
+// 	password: "",
+// };
+// loginInfo.password = "asd123";
+// console.log(loginInfo);
+const a = () => {
+	return (dispatch) => {
+		dispatch({
+			type: "LOGOUT",
+		});
+	};
 };
-loginInfo.password = "asd123";
-console.log(loginInfo);
+a();
