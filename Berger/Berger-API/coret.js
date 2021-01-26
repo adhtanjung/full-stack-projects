@@ -17,4 +17,6 @@
 
 const crypto = require("crypto");
 const password = "Asd12345";
-console.log(crypto.createHmac("sha256", "bergerHash", password).digest("hex"));
+console.log(
+	crypto.createHmac("sha256", "bergerHash").update(password).digest("hex")
+);

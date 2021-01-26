@@ -5,11 +5,13 @@ import "./App.css";
 import Header from "./components/Header";
 import VerificationAlert from "./components/VerificationAlert";
 import Cart from "./pages/Cart";
+import ForgotPassword from "./pages/ForgotPassword";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import ManageData from "./pages/ManageData";
 import ProductDetail from "./pages/ProductDetail";
 import Profile from "./pages/Profile";
+import ResetPassword from "./pages/ResetPassword";
 import SignUp from "./pages/SignUp";
 import Verification from "./pages/Verification";
 import { keepLoginAction, fetchCartByUserIdAction } from "./redux/actions";
@@ -37,6 +39,8 @@ function App(props) {
 			<Route exact path="/profile" component={Profile} />
 			<Route exact path="/manage-data" component={ManageData} />
 			<Route exact path="/verification" component={Verification} />
+			<Route exact path="/forgot-password" component={ForgotPassword} />
+			<Route exact path="/reset-password" component={ResetPassword} />
 		</div>
 	);
 }

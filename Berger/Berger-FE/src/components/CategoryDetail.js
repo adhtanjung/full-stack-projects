@@ -3,7 +3,6 @@ import LightSpeed from "react-reveal/LightSpeed";
 
 function CategoryDetail(props) {
 	const { selectedCategory } = props;
-	console.log(selectedCategory);
 	const Categorydetail = () => {
 		if (selectedCategory === 1) {
 			return <h2 className="clickable-category">It’s burger o’clock</h2>;

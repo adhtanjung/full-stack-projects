@@ -54,9 +54,12 @@ function Login(props) {
 							className="user-input"
 						/>
 					</div>
-					<Button className="w-100 mb-4 btn" color="warning">
+					<Button className="w-100  btn" color="warning">
 						SIGN IN
 					</Button>
+					<center className="mb-4">
+						<Link to="/forgot-password">Forgot password</Link>
+					</center>
 					<center>
 						<h6>Don't have an account yet?</h6>
 					</center>

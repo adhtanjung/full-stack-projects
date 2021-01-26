@@ -1,5 +1,6 @@
 const uploader = require("./uploader");
 const transporter = require("./nodemailer");
+const { html, html2 } = require("./html");
 const { checkToken, createJWTToken } = require("./jwt");
 
 module.exports = {
@@ -7,4 +8,6 @@ module.exports = {
 	checkToken,
 	createJWTToken,
 	transporter,
+	html,
+	html2,
 };

@@ -3,6 +3,7 @@ const INTIAL_STATE = {
 	email: "",
 	role_id: null,
 	isverified: null,
+	resetPassword: false,
 };
 
 export const userReducer = (state = INTIAL_STATE, action) => {
@@ -20,6 +21,16 @@ export const userReducer = (state = INTIAL_STATE, action) => {
 			return {
 				...state,
 				...action.payload,
+			};
+		case "RESET_PASSWORD_START":
+			return {
+				...state,
+				resetPassword: true,
+			};
+		case "RESET_PASSWORD_SUCCESS":
+			return {
+				...state,
+				resetPassword: true,
 			};
 		default:
 			return state;

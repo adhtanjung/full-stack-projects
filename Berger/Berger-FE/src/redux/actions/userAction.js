@@ -182,3 +182,38 @@ export const resendEmailAction = (email, token) => {
 		}
 	};
 };
+
+export const forgotPasswordAction = (email) => {
+	return async (dispatch) => {
+		try {
+			await axios.post(`${api_url}/users/forgot-password`, {
+				email,
+			});
+		} catch (err) {
+			console.log(err);
+		}
+	};
+};
+
+export const resetPasswordAction = (password, token) => {
+	return async (dispatch) => {
+		dispatch({
+			type: "RESET_PASSWORD_START",
+		});
+		try {
+			console.log(password);
+			const headers = {
+				headers: {
+					Authorization: `Bearer ${token}`,
+				},
+			};
+			await axios.post(`${api_url}/users/reset-password`, password, headers);
+			// window.location.href("/");
+			dispatch({
+				type: "RESET_PASSWORD_SUCCESS",
+			});
+		} catch (err) {
+			console.log(err);
+		}
+	};
+};

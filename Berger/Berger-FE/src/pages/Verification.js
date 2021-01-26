@@ -8,7 +8,7 @@ function Verification(props) {
 	useEffect(() => {
 		const token = props.location.search.split("=").pop();
 		props.userVerificationAction(token);
-	}, []);
+	}, [props]);
 	if (props.isverified === 1 || props.userID === 0) {
 		return <Redirect to="/" />;
 	}

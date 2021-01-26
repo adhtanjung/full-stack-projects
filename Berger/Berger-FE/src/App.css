@@ -162,4 +162,9 @@
   -webkit-box-shadow: 1px 0px 8px 0px #fdba9a !important;
           box-shadow: 1px 0px 8px 0px #fdba9a !important;
 }
+
+.resendemail-click:hover {
+  cursor: pointer;
+  color: #a77248;
+}
 /*# sourceMappingURL=App.css.map */

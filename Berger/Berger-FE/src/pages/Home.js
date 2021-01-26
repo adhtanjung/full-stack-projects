@@ -67,7 +67,7 @@ function Home(props) {
 	}, []);
 	useEffect(() => {
 		setGetProducts(props.productList);
-	}, []);
+	}, [props.productList]);
 
 	const renderProducts = (i) => {
 		if (selectedCategory === i) {
@@ -129,13 +129,11 @@ function Home(props) {
 					return val.category === i;
 				});
 				setGetProducts(filteredProducts);
-				console.log(filteredProducts);
 			}
 		} catch (err) {
 			console.log(err);
 		}
 	};
-	console.log(getProducts);
 	if (props.loading) {
 		return <Spinner type="grow" />;
 	}
