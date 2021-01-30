@@ -2,45 +2,66 @@ import axios from "axios";
 import { api_url } from "../../helpers/api_url";
 import swal from "sweetalert";
 import SHA256 from "crypto-js/sha256";
+import {
+	API_PRODUCT_SUCCESS,
+	API_USER_FAILED,
+	API_USER_START,
+	API_USER_SUCCESS,
+} from "../types";
 
 export const signupAction = (data) => {
-	return (dispatch) => {
-		axios
-			.get(`${api_url}/users/userdetail?email=${data.email}`)
-			.then((res) => {
-				if (res.data.length === 0) {
-					axios
-						.post(`${api_url}/users/signup`, {
-							email: data.email,
-							password: data.password,
-						})
-						.then((res) => {
-							dispatch({
-								type: "SIGNUP",
-								payload: res.data,
-							});
-							localStorage.setItem("token", res.data.token);
-						})
-						.catch((err) => {
-							console.log(err);
-						});
-				} else {
-					swal({
-						title: "Email already taken",
-					});
-				}
-			})
-			.catch((err) => {
-				console.log(err);
+	return async (dispatch) => {
+		dispatch({
+			type: API_USER_START,
+		});
+		try {
+			const res = await axios.get(
+				`${api_url}/users/userdetail?email=${data.email}`
+			);
+			if (res.data.length === 0) {
+				const response = await axios.post(`${api_url}/users/signup`, {
+					email: data.email,
+					password: data.password,
+				});
+				dispatch({
+					type: "SIGNUP",
+					payload: response.data,
+				});
+				dispatch({
+					type: API_USER_SUCCESS,
+				});
+				localStorage.setItem("token", res.data.token);
+			} else {
+				dispatch({
+					type: API_USER_FAILED,
+					payload: "Email already taken",
+				});
+				swal({
+					title: "Email already taken",
+				});
+			}
+		} catch (err) {
+			console.log(err);
+			dispatch({
+				type: API_USER_FAILED,
+				payload: err,
 			});
+		}
 	};
 };
 export const loginAction = (data) => {
 	return async (dispatch) => {
+		dispatch({
+			type: API_USER_START,
+		});
 		try {
 			const response = await axios.post(`${api_url}/users/login`, data);
 
 			if (response.data.length === 0) {
+				dispatch({
+					type: API_USER_FAILED,
+					payload: "User not found",
+				});
 				alert("User not found");
 			} else {
 				const { id, email, role_id, isverified, token } = response.data;
@@ -49,8 +70,15 @@ export const loginAction = (data) => {
 					type: "LOGIN",
 					payload: { id, email, role_id, isverified },
 				});
+				dispatch({
+					type: API_PRODUCT_SUCCESS,
+				});
 			}
 		} catch (err) {
+			dispatch({
+				type: API_USER_FAILED,
+				payload: err,
+			});
 			console.log(err);
 		}
 	};
@@ -62,6 +90,9 @@ export const logoutAction = () => {
 };
 export const keepLoginAction = (token) => {
 	return async (dispatch) => {
+		dispatch({
+			type: API_USER_START,
+		});
 		try {
 			const headers = {
 				headers: {
@@ -72,6 +103,9 @@ export const keepLoginAction = (token) => {
 			dispatch({
 				type: "LOGIN",
 				payload: res.data,
+			});
+			dispatch({
+				type: API_USER_SUCCESS,
 			});
 		} catch (err) {
 			console.log(err);
@@ -175,8 +209,14 @@ export const userVerificationAction = (token) => {
 
 export const resendEmailAction = (email, token) => {
 	return async (dispatch) => {
+		dispatch({
+			type: API_USER_START,
+		});
 		try {
 			await axios.post(`${api_url}/users/resend-email`, { email, token });
+			dispatch({
+				type: API_USER_SUCCESS,
+			});
 		} catch (err) {
 			console.log(err);
 		}
@@ -215,5 +255,11 @@ export const resetPasswordAction = (password, token) => {
 		} catch (err) {
 			console.log(err);
 		}
+	};
+};
+
+export const loginWithGoogleAction = () => {
+	return async (dispatch) => {
+		await axios.get(`${api_url}/google`);
 	};
 };

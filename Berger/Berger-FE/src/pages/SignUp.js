@@ -1,7 +1,7 @@
 import React, { useState, useRef } from "react";
 import { connect } from "react-redux";
 import { Link, Redirect } from "react-router-dom";
-import { Input, Button, FormGroup, Label } from "reactstrap";
+import { Input, Button, FormGroup, Label, Spinner } from "reactstrap";
 import { signupAction, fetchCartByUserIdAction } from "../redux/actions";
 
 let loginInfo = {
@@ -82,12 +82,12 @@ function SignUp(props) {
 					</div>
 					<FormGroup check>
 						<Label check style={{ fontSize: "12px" }}>
-							<Input type="checkbox" /> I agree to the following: Privacy Policy
-							Terms of Service
+							<Input type="checkbox" required /> I agree to the following:
+							Privacy Policy Terms of Service
 						</Label>
 					</FormGroup>
 					<Button color="warning" className="my-4">
-						SIGN UP
+						{props.loading ? <Spinner /> : "SIGN UP"}
 					</Button>
 					<p style={{ fontSize: "12px" }}>
 						Not your computer? Please make sure to log out before you leave
@@ -98,7 +98,7 @@ function SignUp(props) {
 	);
 }
 const mapStatetoProps = ({ user }) => {
-	return { id: user.id };
+	return { id: user.id, loading: user.loading };
 };
 
 export default connect(mapStatetoProps, {

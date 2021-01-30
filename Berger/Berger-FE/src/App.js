@@ -5,9 +5,11 @@ import "./App.css";
 import Header from "./components/Header";
 import VerificationAlert from "./components/VerificationAlert";
 import Cart from "./pages/Cart";
+import Chat from "./pages/Chat";
 import ForgotPassword from "./pages/ForgotPassword";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
+import LoginWithGoogle from "./pages/LoginWithGoogle";
 import ManageData from "./pages/ManageData";
 import ProductDetail from "./pages/ProductDetail";
 import Profile from "./pages/Profile";
@@ -41,6 +43,8 @@ function App(props) {
 			<Route exact path="/verification" component={Verification} />
 			<Route exact path="/forgot-password" component={ForgotPassword} />
 			<Route exact path="/reset-password" component={ResetPassword} />
+			<Route exact path="/loginwithgoogle" component={LoginWithGoogle} />
+			<Route exact path="/chat" component={Chat} />
 		</div>
 	);
 }

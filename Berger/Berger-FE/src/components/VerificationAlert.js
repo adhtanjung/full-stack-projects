@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Alert } from "reactstrap";
+import { Alert, Spinner } from "reactstrap";
 import { IoMdWarning } from "react-icons/io";
 import { BsCheckAll } from "react-icons/bs";
 import { connect } from "react-redux";
@@ -12,18 +12,29 @@ function VerificationAlert(props) {
 		props.resendEmailAction(props.email, token);
 		setemailSent(true);
 	};
-	return (
-		<Alert color="danger" className="d-flex align-items-center">
-			<IoMdWarning /> &nbsp; Your account has not been verified yet!{" "}
-			{emailSent ? (
-				<span>
-					Email sent! <BsCheckAll />
-				</span>
-			) : (
+	const resendEmailFeedBack = () => {
+		const { loading } = props;
+		if (!emailSent) {
+			return (
 				<span onClick={handleResendEmail} className="resendemail-click">
 					&nbsp; Click here to send a verification email
 				</span>
-			)}{" "}
+			);
+		}
+		if (loading) {
+			return <Spinner />;
+		} else if (!loading && emailSent) {
+			return (
+				<span>
+					Email sent! <BsCheckAll />
+				</span>
+			);
+		}
+	};
+	return (
+		<Alert color="danger" className="d-flex align-items-center">
+			<IoMdWarning /> &nbsp; Your account has not been verified yet!{" "}
+			{resendEmailFeedBack()}
 		</Alert>
 	);
 }

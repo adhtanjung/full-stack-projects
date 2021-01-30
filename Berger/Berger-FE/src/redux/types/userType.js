@@ -1,0 +1,3 @@
+export const API_USER_START = "API_USER_START";
+export const API_USER_SUCCESS = "API_USER_SUCCESS";
+export const API_USER_FAILED = "API_USER_FAILED";

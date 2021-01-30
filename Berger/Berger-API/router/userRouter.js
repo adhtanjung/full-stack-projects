@@ -1,4 +1,4 @@
-const db = require("../database");
+const { db } = require("../database");
 const express = require("express");
 const crypto = require("crypto");
 const router = express.Router();
@@ -218,10 +218,10 @@ router.post("/resend-email", (req, res) => {
 		from: "Berger.inc <adhtanjung@gmail.com>",
 		to: email,
 		subject: "Email Verification",
-		text: "Halo Dunia!",
 		html: html(email, token),
 	};
 
+	console.log(req.body.email);
 	transporter.sendMail(mailOptions, (err, res2) => {
 		if (err) {
 			console.log("Something's went wrong");

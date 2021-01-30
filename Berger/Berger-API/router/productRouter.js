@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const db = require("../database");
+const { db } = require("../database");
 const _ = require("lodash");
 const { uploader } = require("../helpers");
 const path = "/products";
@@ -10,6 +10,7 @@ const fs = require("fs");
 // GET PRODUCTS DATA
 router.get("/", (req, res) => {
 	let sql = `SELECT * FROM products`;
+	console.log("masuk");
 	if (!_.isEmpty(req.query.category)) {
 		db.query(
 			`${sql} WHERE category = ${parseInt(req.query.category)}`,

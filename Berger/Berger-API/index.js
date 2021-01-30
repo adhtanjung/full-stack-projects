@@ -1,21 +1,41 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
+const app = express();
+const server = require("http").createServer(app);
+const io = require("socket.io")(server);
 const {
 	userRouter,
 	cartRouter,
 	productRouter,
 	imageRouter,
+	mongoRouter,
+	googleRouter,
 } = require("./router");
 const bearerToken = require("express-bearer-token");
 const port = 2002;
-
-const app = express();
+const passport = require("passport");
 
 app.use(bearerToken());
 app.use(bodyParser());
 app.use(cors());
+app.use(passport.initialize());
+app.use(passport.session());
 app.use(express.static("public"));
+
+let userCount = 0;
+app.io = io;
+app.userCount = userCount;
+
+io.on("connection", (socket) => {
+	userCount++;
+	console.log(userCount);
+	io.emit("JumlahUser", userCount);
+	socket.on("disconnect", () => {
+		userCount--;
+		console.log(userCount);
+	});
+});
 
 app.get("/", (req, res) => {
 	res.status(200).send("<h1>Berger API ok!</h1>");
@@ -25,5 +45,7 @@ app.use("/users", userRouter);
 app.use("/cart", cartRouter);
 app.use("/products", productRouter);
 app.use("/images", imageRouter);
+app.use("/mongo", mongoRouter);
+app.use("/google", googleRouter);
 
-app.listen(port, () => console.log(`Server listens at port ${port}`));
+server.listen(port, () => console.log(`Server listening at port ${port}`));
