@@ -4,6 +4,7 @@ const productRouter = require("./productRouter");
 const imageRouter = require("./imageRouter");
 const mongoRouter = require("./mongoRouter");
 const googleRouter = require("./googleRouter");
+const sequelizeRouter = require("./sequelizeRouter");
 
 module.exports = {
 	userRouter,
@@ -12,4 +13,5 @@ module.exports = {
 	imageRouter,
 	mongoRouter,
 	googleRouter,
+	sequelizeRouter,
 };
