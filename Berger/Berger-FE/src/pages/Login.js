@@ -8,13 +8,13 @@ import {
 	loginWithGoogleAction,
 } from "../redux/actions";
 import { Spinner } from "reactstrap";
-import { GoogleLogin } from "react-google-login";
+// import { GoogleLogin } from "react-google-login";
 const loginInfo = {
 	email: "",
 	password: "",
 };
-const clientId =
-	"414985155471-np2sdlh50bfkk5ptam9km2qfb3opi109.apps.googleusercontent.com";
+// const clientId =
+// 	"414985155471-np2sdlh50bfkk5ptam9km2qfb3opi109.apps.googleusercontent.com";
 function Login(props) {
 	const [login, setLogin] = useState(loginInfo);
 
@@ -33,25 +33,18 @@ function Login(props) {
 		props.loginAction(encryptedData);
 		// window.location.reload();
 	};
-	const handleGoogleLogin = () => {
-		props.loginWithGoogleAction();
-	};
-	const handleGoogle = (res) => {
-		console.log(res);
-	};
-	const onSuccess = (res) => {
-		console.log("Login Success: currentUser:", res.profileObj);
-		alert(
-			`Logged in successfully welcome ${res.profileObj.name} 😍. \n See console for full profile object.`
-		);
-	};
 
-	const onFailure = (res) => {
-		console.log("Login failed: res:", res);
-		alert(
-			`Failed to login. 😢 Please ping this to repo owner twitter.com/sivanesh_fiz`
-		);
-	};
+	// const onSuccess = (res) => {
+	// 	console.log("Login Success: currentUser:", res.profileObj);
+	// 	alert(
+	// 		`Logged in successfully welcome ${res.profileObj.name} . \n See console for full profile object.`
+	// 	);
+	// };
+
+	// const onFailure = (res) => {
+	// 	console.log("Login failed: res:", res);
+	// 	alert(`Failed to login. `);
+	// };
 	if (props.userID !== 0) {
 		return <Redirect to="/" />;
 	}
@@ -97,10 +90,7 @@ function Login(props) {
 					</Link>
 				</form>
 
-				<a href="http://localhost:2002/google">
-					<Button type="google">Login with google</Button>
-				</a>
-				<GoogleLogin
+				{/* <GoogleLogin
 					clientId={clientId}
 					buttonText="Login"
 					onSuccess={onSuccess}
@@ -108,7 +98,7 @@ function Login(props) {
 					cookiePolicy={"single_host_origin"}
 					style={{ marginTop: "100px" }}
 					isSignedIn={true}
-				/>
+				/> */}
 			</div>
 		</div>
 	);

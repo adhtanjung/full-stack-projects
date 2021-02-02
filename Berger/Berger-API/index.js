@@ -14,15 +14,13 @@ const {
 	sequelizeRouter,
 } = require("./router");
 const bearerToken = require("express-bearer-token");
-const port = 2002;
+const port = process.env.PORT || 2002;
 require("./helpers/passport");
 
 app.use(bearerToken());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(cors());
-// app.use(passport.initialize());
-// app.use(passport.session());
 app.use(express.static("public"));
 
 // app.use(
@@ -55,6 +53,5 @@ app.use("/products", productRouter);
 app.use("/images", imageRouter);
 app.use("/mongo", mongoRouter);
 app.use("/sequelize", sequelizeRouter);
-// app.use("/google", googleRouter);
 
 server.listen(port, () => console.log(`Server listening at port ${port}`));

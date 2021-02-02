@@ -27,7 +27,7 @@ function SignUp(props) {
 	const emailCheck = useRef();
 
 	if (props.id !== 0) {
-		props.fetchCartByUserIdAction(props.id);
+		// props.fetchCartByUserIdAction(props.id);
 		return <Redirect to="/" />;
 	}
 	return (

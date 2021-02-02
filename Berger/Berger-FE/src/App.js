@@ -16,7 +16,7 @@ import Profile from "./pages/Profile";
 import ResetPassword from "./pages/ResetPassword";
 import SignUp from "./pages/SignUp";
 import Verification from "./pages/Verification";
-import { keepLoginAction, fetchCartByUserIdAction } from "./redux/actions";
+import { keepLoginAction } from "./redux/actions";
 
 function App(props) {
 	useEffect(() => {
@@ -58,5 +58,4 @@ const mapStateToProps = ({ user, cart }) => {
 
 export default connect(mapStateToProps, {
 	keepLoginAction,
-	fetchCartByUserIdAction,
 })(App);

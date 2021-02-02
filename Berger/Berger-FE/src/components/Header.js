@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
-import { logoutAction, fetchCartByUserIdAction } from "../redux/actions";
+import { logoutAction } from "../redux/actions";
 import UserHeader from "./UserHeader";
 import AdminHeader from "./AdminHeader";
 
@@ -16,8 +16,8 @@ function Header(props) {
 	// 	props.fetchCartByUserIdAction(props.id);
 	// }, []);
 	const renderHeader = () => {
-		const { id } = props;
-		if (id > 1) {
+		const { id, role_id } = props;
+		if (id > 1 && role_id === 2) {
 			return (
 				<UserHeader
 					logout={logout}
@@ -65,9 +65,9 @@ const mapStateToProps = ({ user, cart }) => {
 		id: user.id,
 		email: user.email,
 		cartList: cart.cartList,
+		role_id: user.role_id,
 	};
 };
 export default connect(mapStateToProps, {
 	logoutAction,
-	fetchCartByUserIdAction,
 })(Header);
