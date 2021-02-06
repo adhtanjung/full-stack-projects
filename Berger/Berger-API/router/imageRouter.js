@@ -1,5 +1,5 @@
 const express = require("express");
-const db = require("../database");
+const { query } = require("../database");
 const router = express.Router();
 const { uploader } = require("../helpers");
 
@@ -10,17 +10,14 @@ router.post("/", (req, res) => {
 		upload(req, res, (err) => {
 			const { image } = req.files;
 			const imagePath = image ? `${path}/${image[0].filename}` : null;
-			db.query(
-				`INSERT INTO images (imagepath) VALUES ('${imagePath}')`,
-				(err) => {
-					if (err) {
-						return res.status(500).send(err.message);
-					}
-					return res
-						.status(201)
-						.send({ message: "IMAGE_POSTED", status: "SUCCESS" });
+			query(`INSERT INTO images (imagepath) VALUES ('${imagePath}')`, (err) => {
+				if (err) {
+					return res.status(500).send(err.message);
 				}
-			);
+				return res
+					.status(201)
+					.send({ message: "IMAGE_POSTED", status: "SUCCESS" });
+			});
 		});
 	} catch (err) {
 		console.log(err);

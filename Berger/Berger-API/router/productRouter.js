@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { db } = require("../database");
+const { query } = require("../database");
 const _ = require("lodash");
 const { uploader } = require("../helpers");
 const path = "/products";
@@ -12,7 +12,7 @@ router.get("/", (req, res) => {
 	let sql = `SELECT * FROM products`;
 	console.log("masuk");
 	if (!_.isEmpty(req.query.category)) {
-		db.query(
+		query(
 			`${sql} WHERE category = ${parseInt(req.query.category)}`,
 			(err, data) => {
 				if (err) {
@@ -22,7 +22,7 @@ router.get("/", (req, res) => {
 			}
 		);
 	} else {
-		db.query(sql, (err, data) => {
+		query(sql, (err, data) => {
 			if (err) {
 				return res.status(500).send(err.message);
 			}
@@ -35,7 +35,7 @@ router.get("/", (req, res) => {
 router.get("/:id", (req, res) => {
 	const id = req.params.id;
 	let sql = `SELECT * FROM products WHERE id=${id}`;
-	db.query(sql, (err, data) => {
+	query(sql, (err, data) => {
 		if (err) {
 			return res.status(500).send(err.message);
 		}
@@ -50,7 +50,7 @@ router.post("/", (req, res) => {
 			const { name, category, price } = JSON.parse(req.body.data);
 			const { image } = req.files;
 			const imagePath = image ? `${path}/${image[0].filename}` : null;
-			db.query(
+			query(
 				`INSERT INTO products (name,image,category,price,imagepath) VALUES ('${name}','${imagePath}',${category},${price},'${imagePath}')`,
 				(err, data) => {
 					if (err) {
@@ -69,7 +69,7 @@ router.post("/", (req, res) => {
 // DELETE PRODUCT
 router.delete("/:id", (req, res) => {
 	const id = req.params.id;
-	db.query(`DELETE FROM products WHERE id=${id}`, (err, data) => {
+	query(`DELETE FROM products WHERE id=${id}`, (err, data) => {
 		if (err) {
 			return res.status(500).send(err.message);
 		}
@@ -85,7 +85,7 @@ router.patch("/:id", (req, res) => {
 	try {
 		const id = req.params.id;
 
-		db.query(`SELECT * FROM products WHERE id=${id}`, (err, data) => {
+		query(`SELECT * FROM products WHERE id=${id}`, (err, data) => {
 			if (err) {
 				return res.status(500).send(err.message);
 			}
@@ -95,7 +95,7 @@ router.patch("/:id", (req, res) => {
 				const { name, category, price } = JSON.parse(req.body.data);
 				const { image } = req.files;
 				const imagePath = image ? `${path}/${image[0].filename}` : oldImagePath;
-				db.query(
+				query(
 					`UPDATE products SET name='${name}', image='${imagePath}',category=${category},price=${price}, imagepath='${imagePath}' WHERE id=${id}`,
 					(err, data) => {
 						if (err) {

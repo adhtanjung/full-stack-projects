@@ -1,19 +1,19 @@
 const express = require("express");
 const router = express.Router();
-const { db } = require("../database");
+const { query } = require("../database");
 
 // GET CART BY USERID
 router.get("/", (req, res) => {
 	if (req.query.userID) {
 		let sql = `SELECT * FROM cart WHERE userID=${req.query.userID}`;
-		db.query(sql, (err, data) => {
+		query(sql, (err, data) => {
 			if (err) {
 				return res.status(500).send(err.message);
 			}
 			return res.status(200).send(data);
 		});
 	} else {
-		db.query(`SELECT * FROM cart`, (err, data) => {
+		query(`SELECT * FROM cart`, (err, data) => {
 			if (err) {
 				return res.status(500).send(err.message);
 			}
@@ -25,7 +25,7 @@ router.get("/", (req, res) => {
 // POST TO CART
 router.post("/", (req, res) => {
 	let sql = `INSERT INTO cart SET ?`;
-	db.query(sql, req.body, (err, data) => {
+	query(sql, req.body, (err, data) => {
 		if (err) {
 			return res.status(500).send(err.message);
 		}

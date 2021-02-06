@@ -12,6 +12,7 @@
 		"crypto-js": "^4.0.0",
 		"gsap": "^3.5.1",
 		"nodemailer": "^6.4.17",
+		"rc-footer": "^0.6.3",
 		"react": "^17.0.1",
 		"react-bootstrap": "^1.4.0",
 		"react-dom": "^17.0.1",

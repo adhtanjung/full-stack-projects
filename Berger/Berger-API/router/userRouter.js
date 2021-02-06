@@ -1,4 +1,4 @@
-const { db } = require("../database");
+const { query } = require("../database");
 const express = require("express");
 const crypto = require("crypto");
 const router = express.Router();
@@ -8,6 +8,7 @@ const {
 	transporter,
 	html,
 	html2,
+	googleAuth,
 } = require("../helpers");
 const jwt = require("jsonwebtoken");
 const hash = require("../helpers/hash");
@@ -18,7 +19,7 @@ router.post("/login", (req, res) => {
 	const encryptedPassword = hash(password);
 	let sql = `SELECT id,email,role_id,isverified FROM users WHERE email='${email}' and password = '${encryptedPassword}'`;
 	try {
-		db.query(sql, (err, data) => {
+		query(sql, (err, data) => {
 			if (err) {
 				return res.status(500).send(err.message);
 			}
@@ -39,7 +40,7 @@ router.post("/login", (req, res) => {
 router.post("/keep-login", checkToken, (req, res) => {
 	try {
 		let sql = `SELECT id,email,role_id,isverified FROM users WHERE id=${req.user.id}`;
-		db.query(sql, (err, data) => {
+		query(sql, (err, data) => {
 			return res.status(200).send(data[0]);
 		});
 	} catch (err) {
@@ -54,7 +55,7 @@ router.post("/signup", (req, res) => {
 	const encryptedPassword = hash(password);
 	try {
 		let sql = `INSERT INTO users`;
-		db.query(
+		query(
 			`${sql}(email,password,role_id,isverified) VALUES ('${email}','${encryptedPassword}',2,0);`,
 			(err, data) => {
 				if (err) {
@@ -101,7 +102,7 @@ router.post("/signup", (req, res) => {
 router.get("/:condition", (req, res) => {
 	if (req.params.condition === "userdetail") {
 		if (req.query.email) {
-			db.query(
+			query(
 				`SELECT id,email,role_id,isverified FROM users WHERE email='${req.query.email}'`,
 				(err, data) => {
 					if (err) {
@@ -124,7 +125,7 @@ router.get("/:condition", (req, res) => {
 				}
 				return decoded;
 			});
-			db.query(
+			query(
 				`UPDATE users SET isverified =1 WHERE id=${userData.id}`,
 				(err, data) => {
 					return res
@@ -136,7 +137,7 @@ router.get("/:condition", (req, res) => {
 	} else {
 		const id = req.params.condition;
 		let sql = `SELECT * FROM users WHERE id=${id}`;
-		db.query(sql, (err, data) => {
+		query(sql, (err, data) => {
 			if (err) {
 				return res.status(500).send(err.message);
 			}
@@ -147,7 +148,7 @@ router.get("/:condition", (req, res) => {
 // GET USERS EMAIL THRU QUERY
 // router.get("/userdetail", (req, res) => {
 // 	if (req.query.email) {
-// 		db.query(
+// 		query(
 // 			`SELECT id,email,role_id,isverified FROM users WHERE email='${req.query.email}'`,
 // 			(err, data) => {
 // 				if (err) {
@@ -163,25 +164,25 @@ router.get("/:condition", (req, res) => {
 router.patch("/:id", (req, res) => {
 	const id = req.params.id;
 	if (req.body.email) {
-		db.query(
+		query(
 			`UPDATE users SET email='${req.body.email}' WHERE id=${id}`,
 			(err, data) => {
 				if (err) {
 					return res.status(500).send(err.message);
 				}
-				db.query(`SELECT * FROM users WHERE id=${id}`, (err, data) => {
+				query(`SELECT * FROM users WHERE id=${id}`, (err, data) => {
 					return res.status(201).send(data[0]);
 				});
 			}
 		);
 	} else if (req.body.password) {
-		db.query(
+		query(
 			`UPDATE users SET password ='${req.body.password}' WHERE id=${id}`,
 			(err, data) => {
 				if (err) {
 					return status(500).send(err.message);
 				}
-				db.query(`SELECT * FROM users WHERE id=${id}`, (err, data) => {
+				query(`SELECT * FROM users WHERE id=${id}`, (err, data) => {
 					return res.status(201).send(data[0]);
 				});
 			}
@@ -195,15 +196,12 @@ router.post("/verification", checkToken, (req, res) => {
 	try {
 		if (req.user) {
 			const { id, email, role_id } = req.user;
-			db.query(
-				`UPDATE users SET isverified = 1 WHERE id =${id}`,
-				(err, data) => {
-					if (err) {
-						return res.send(err.message);
-					}
-					return res.status(200).send({ id, email, role_id, isverified: 1 });
+			query(`UPDATE users SET isverified = 1 WHERE id =${id}`, (err, data) => {
+				if (err) {
+					return res.send(err.message);
 				}
-			);
+				return res.status(200).send({ id, email, role_id, isverified: 1 });
+			});
 		}
 	} catch (err) {
 		console.log(err);
@@ -236,7 +234,7 @@ router.post("/resend-email", (req, res) => {
 // HANDLE FORGOT PASSWORD
 router.post("/forgot-password", (req, res) => {
 	const { email } = req.body;
-	db.query(`SELECT id FROM users WHERE email='${email}'`, (err, data) => {
+	query(`SELECT id FROM users WHERE email='${email}'`, (err, data) => {
 		if (err) {
 			return res.status(500).send(err.message);
 		}
@@ -269,7 +267,7 @@ router.post("/reset-password", checkToken, (req, res) => {
 	const encryptedPassword = hash(password);
 	const { id } = req.user;
 	console.log(encryptedPassword);
-	db.query(
+	query(
 		`UPDATE users SET password='${encryptedPassword}' WHERE id=${id}`,
 		(err, data) => {
 			if (err) {
@@ -282,6 +280,16 @@ router.post("/reset-password", checkToken, (req, res) => {
 			});
 		}
 	);
+});
+
+// login with google
+router.post("/google/login", googleAuth, async (req, res) => {
+	try {
+		console.log(req.body);
+	} catch (err) {
+		console.log(err.message);
+		return res.send(err.message);
+	}
 });
 
 module.exports = router;

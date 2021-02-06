@@ -9,12 +9,16 @@ import {
 } from "../redux/actions";
 import { Spinner } from "reactstrap";
 // import { GoogleLogin } from "react-google-login";
+import GoogleLogin from "../components/GoogleLogin";
+import GoogleLogout from "../components/GoogleLogout";
+import { refreshTokenSetup } from "../helpers/refreshToken";
+
 const loginInfo = {
 	email: "",
 	password: "",
 };
 // const clientId =
-// 	"414985155471-np2sdlh50bfkk5ptam9km2qfb3opi109.apps.googleusercontent.com";
+// 	"414985155471-ece9j71a5hm6p798baff9ki6f11aqm7r.apps.googleusercontent.com";
 function Login(props) {
 	const [login, setLogin] = useState(loginInfo);
 
@@ -37,14 +41,18 @@ function Login(props) {
 	// const onSuccess = (res) => {
 	// 	console.log("Login Success: currentUser:", res.profileObj);
 	// 	alert(
-	// 		`Logged in successfully welcome ${res.profileObj.name} . \n See console for full profile object.`
+	// 		`Logged in successfully welcome ${res.profileObj.name} 😍. \n See console for full profile object.`
 	// 	);
+	// 	refreshTokenSetup(res);
 	// };
 
 	// const onFailure = (res) => {
 	// 	console.log("Login failed: res:", res);
-	// 	alert(`Failed to login. `);
+	// 	alert(
+	// 		`Failed to login. 😢 Please ping this to repo owner twitter.com/sivanesh_fiz`
+	// 	);
 	// };
+
 	if (props.userID !== 0) {
 		return <Redirect to="/" />;
 	}
@@ -97,8 +105,10 @@ function Login(props) {
 					onFailure={onFailure}
 					cookiePolicy={"single_host_origin"}
 					style={{ marginTop: "100px" }}
-					isSignedIn={true}
+					isSignedIn={false}
 				/> */}
+				<GoogleLogin />
+				<GoogleLogout />
 			</div>
 		</div>
 	);
