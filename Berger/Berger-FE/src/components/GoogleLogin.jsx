@@ -11,21 +11,12 @@ const clientId =
 function GoogleLogin() {
 	const onSuccess = (res) => {
 		console.log("Login Success: currentUser:", res.profileObj);
-		console.log("email: ", res.profileObj.email, res.profileObj.googleId);
+		console.log(res);
 		alert(
 			`Logged in successfully welcome ${res.profileObj.name} 😍. \n See console for full profile object.`
 		);
-		axios
-			.post(`${api_url}/users/google/login`, {
-				googleId: res.profileObj.googleId,
-				email: res.profileObj.email,
-			})
-			.then((res) => {
-				console.log("masuk google");
-			})
-			.catch((err) => {
-				console.log(err);
-			});
+		const token = res.tokenId;
+		axios.post(`${api_url}/users/google/login`, { token });
 		refreshTokenSetup(res);
 	};
 	const onFailure = (res) => {
@@ -36,7 +27,7 @@ function GoogleLogin() {
 		onSuccess,
 		onFailure,
 		clientId,
-		isSignedIn: false,
+		isSignedIn: true,
 		accessType: "offline",
 		// responseType: 'code',
 		// prompt: 'consent',

@@ -1,3 +1,5 @@
+const { OAuth2Client } = require("google-auth-library");
+const client = new OAuth2Client(process.env.CLIENT_ID);
 const { query } = require("../database");
 const express = require("express");
 const crypto = require("crypto");
@@ -283,9 +285,22 @@ router.post("/reset-password", checkToken, (req, res) => {
 });
 
 // login with google
-router.post("/google/login", googleAuth, async (req, res) => {
+router.post("/google/login", async (req, res) => {
 	try {
-		console.log(req.body);
+		console.log("masuk google");
+		const { token } = req.body;
+		const ticket = await client.verifyIdToken({
+			idToken: token,
+			audience: process.env.CLIENT_ID,
+		});
+		const { name, email, picture, sub } = ticket.getPayload();
+		const response = await query(`SELECT * FROM users WHERE email='${email}'`);
+		// if (response.length > 0) {
+		// 	return res.send(response[0]);
+		// }
+		console.log(sub);
+		res.status(201);
+		// res.json(user);
 	} catch (err) {
 		console.log(err.message);
 		return res.send(err.message);
