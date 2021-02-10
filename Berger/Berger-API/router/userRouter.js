@@ -90,8 +90,9 @@ router.post("/signup", (req, res) => {
 					id: data.insertId,
 					role_id: 2,
 					isverified: 0,
-					email: email,
-					token: token,
+					email,
+					token,
+					isLoggedInWithGoogle: 0,
 				});
 			}
 		);
@@ -105,7 +106,7 @@ router.get("/:condition", (req, res) => {
 	if (req.params.condition === "userdetail") {
 		if (req.query.email) {
 			query(
-				`SELECT id,email,role_id,isverified FROM users WHERE email='${req.query.email}'`,
+				`SELECT id,email,role_id,isverified FROM users WHERE email='${req.query.email}' AND isLoggedInWithGoogle =0`,
 				(err, data) => {
 					if (err) {
 						return res.status(500).send(err.message);
@@ -234,32 +235,38 @@ router.post("/resend-email", (req, res) => {
 });
 
 // HANDLE FORGOT PASSWORD
-router.post("/forgot-password", (req, res) => {
-	const { email } = req.body;
-	query(`SELECT id FROM users WHERE email='${email}'`, (err, data) => {
-		if (err) {
-			return res.status(500).send(err.message);
+router.post("/forgot-password", async (req, res) => {
+	try {
+		const { email } = req.body;
+		const data = await query(
+			`SELECT id FROM users WHERE email='${email}' AND isLoggedInWithGoogle = 0`
+		);
+		console.log(data);
+		if (data.length > 0) {
+			const token = createJWTToken({ ...data[0] });
+			let mailOptions = {
+				from: "Berger.inc <adhtanjung@gmail.com>",
+				to: email,
+				subject: "Email Verification",
+
+				html: html2(token),
+			};
+
+			transporter.sendMail(mailOptions, (err, res2) => {
+				if (err) {
+					console.log("Something's went wrong");
+				} else {
+					console.log("Email sent");
+				}
+			});
+			return res.status(200).send("ok");
+		} else {
+			return res.send(data);
 		}
-
-		const token = createJWTToken({ ...data[0] });
-		let mailOptions = {
-			from: "Berger.inc <adhtanjung@gmail.com>",
-			to: email,
-			subject: "Email Verification",
-			text: "Halo Dunia!",
-
-			html: html2(token),
-		};
-
-		transporter.sendMail(mailOptions, (err, res2) => {
-			if (err) {
-				console.log("Something's went wrong");
-			} else {
-				console.log("Email sent");
-			}
-		});
-		return res.status(200).send("ok");
-	});
+	} catch (err) {
+		console.log(err.message);
+		return res.send(err.message);
+	}
 });
 
 // RESET PASSWORD
@@ -294,7 +301,30 @@ router.post("/google/login", async (req, res) => {
 			audience: process.env.CLIENT_ID,
 		});
 		const { name, email, picture, sub } = ticket.getPayload();
-		const response = await query(`SELECT * FROM users WHERE email='${email}'`);
+		const response = await query(
+			`SELECT u.id, u.email, u.role_id, u.isverified, u.isLoggedInWithGoogle FROM google_users gu
+			JOIN users u ON gu.google_id = u.google_id WHERE u.google_id = '${sub}';`
+		);
+		if (response.length > 0) {
+			const token = createJWTToken({ ...response[0] });
+			console.log(token);
+			return res.status(200).send({ ...response[0], token });
+		} else {
+			await query(`INSERT INTO google_users (google_id) VALUES ('${sub}')`);
+			await query(
+				`INSERT INTO users (email,isverified,google_id,isLoggedInWithGoogle) VALUES ('${email}', 1, '${sub}', 1)`
+			);
+
+			const google_register = await query(
+				`SELECT id, email, role_id, isverified, isLoggedInWithGoogle FROM users WHERE google_id = '${sub}'`
+			);
+			const token = createJWTToken({ ...google_register[0] });
+			return res.send({ ...google_register[0], token });
+		}
+		// res.length == 0
+		// insert into google_users (google_id ) values (${sub})
+		// insert into users () values
+
 		// if (response.length > 0) {
 		// 	return res.send(response[0]);
 		// }
