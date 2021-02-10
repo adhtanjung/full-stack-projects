@@ -8,7 +8,7 @@ import swal from "sweetalert";
 import Bounce from "react-reveal/Bounce";
 import gsap from "gsap";
 import { Spinner } from "reactstrap";
-import spinnerGif from "../components/Rolling-1s-200px.svg";
+import spinnerGif from "../assets/Rolling-1s-200px.svg";
 import CategoryDetail from "../components/CategoryDetail";
 
 function Home(props) {

@@ -30,7 +30,7 @@ export const signupAction = (data) => {
 				dispatch({
 					type: API_USER_SUCCESS,
 				});
-				localStorage.setItem("token", res.data.token);
+				localStorage.setItem("token", response.data.token);
 			} else {
 				dispatch({
 					type: API_USER_FAILED,
@@ -107,6 +107,17 @@ export const keepLoginAction = (token) => {
 			dispatch({
 				type: API_USER_SUCCESS,
 			});
+		} catch (err) {
+			console.log(err);
+		}
+	};
+};
+
+export const keepLoginGoogleAction = (token) => {
+	return async (dispatch) => {
+		console.log(token);
+		try {
+			dispatch(loginWithGoogleAction(token));
 		} catch (err) {
 			console.log(err);
 		}
@@ -226,9 +237,13 @@ export const resendEmailAction = (email, token) => {
 export const forgotPasswordAction = (email) => {
 	return async (dispatch) => {
 		try {
-			await axios.post(`${api_url}/users/forgot-password`, {
+			const response = await axios.post(`${api_url}/users/forgot-password`, {
 				email,
 			});
+			if (response.data.length === 0) {
+				alert("Email not registered");
+			}
+			console.log(response);
 		} catch (err) {
 			console.log(err);
 		}
@@ -258,8 +273,21 @@ export const resetPasswordAction = (password, token) => {
 	};
 };
 
-export const loginWithGoogleAction = () => {
+export const loginWithGoogleAction = (token) => {
 	return async (dispatch) => {
-		await axios.get(`${api_url}/google`);
+		try {
+			const response = await axios.post(`${api_url}/users/google/login`, {
+				token,
+			});
+
+			dispatch({
+				type: "LOGIN",
+				payload: response.data,
+			});
+			console.log(response.data);
+			localStorage.setItem("token", response.data.token);
+		} catch (err) {
+			console.log(err);
+		}
 	};
 };

@@ -5,16 +5,35 @@ import { logoutAction } from "../redux/actions";
 import UserHeader from "./UserHeader";
 import AdminHeader from "./AdminHeader";
 
+import { useGoogleLogout } from "react-google-login";
+const clientId =
+	"414985155471-ece9j71a5hm6p798baff9ki6f11aqm7r.apps.googleusercontent.com";
+
 function Header(props) {
-	const logout = () => {
+	const logout = async () => {
 		localStorage.clear();
 		// localStorage.removeItem("id");
-		props.logoutAction();
+		await props.logoutAction();
+		signOut();
 	};
 	// const [cartList, setCartList] = useState([]);
 	// useEffect(() => {
 	// 	props.fetchCartByUserIdAction(props.id);
 	// }, []);
+
+	const onLogoutSuccess = (res) => {
+		console.log("Logged out Success");
+	};
+
+	const onFailure = () => {
+		console.log("Handle failure cases");
+	};
+
+	const { signOut } = useGoogleLogout({
+		clientId,
+		onLogoutSuccess,
+		onFailure,
+	});
 	const renderHeader = () => {
 		const { id, role_id } = props;
 		if (id > 1 && role_id === 2) {

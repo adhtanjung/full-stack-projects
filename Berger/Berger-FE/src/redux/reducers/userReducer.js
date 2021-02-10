@@ -8,6 +8,7 @@ const INTIAL_STATE = {
 	resetPassword: false,
 	error: "",
 	loading: false,
+	isLoggedInWithGoogle: null,
 };
 
 export const userReducer = (state = INTIAL_STATE, action) => {

@@ -3,14 +3,18 @@ import { connect } from "react-redux";
 import { Link, Redirect } from "react-router-dom";
 import { Input, Button, FormGroup, Label, Spinner } from "reactstrap";
 import { signupAction, fetchCartByUserIdAction } from "../redux/actions";
+import GoogleLogin from "../components/GoogleLogin";
 
 let loginInfo = {
 	email: "",
 	password: "",
 	confirm: "",
 };
-
+// const regex = /^(?=.*[A-Za-z])(?=.*\d)[a-zA-Z0-9!@#$%^&*()~¥=_+}{":;'?/>.<,`\-\|\[\]]{6,50}$/;
 function SignUp(props) {
+	const reUppercase = /[A-Z]/;
+	const re6Chars = /^.{6,}$/;
+	const reSpecialChar = /\W|_/;
 	const [signUp, setsignUp] = useState(loginInfo);
 	const handleInput = (e) => {
 		setsignUp({
@@ -20,8 +24,21 @@ function SignUp(props) {
 	};
 	const handleSubmit = (e) => {
 		e.preventDefault();
+		const { confirm, password } = signUp;
+		if (
+			reUppercase.test(password) &&
+			re6Chars.test(password) &&
+			reSpecialChar.test(password)
+		) {
+			if (confirm === password) {
+				props.signupAction(signUp);
+			} else {
+				alert("Please match the requested format");
+			}
+		} else {
+			alert("Please match the requested format");
+		}
 
-		props.signupAction(signUp);
 		// localStorage.setItem("id", props.id);
 	};
 	const emailCheck = useRef();
@@ -42,6 +59,8 @@ function SignUp(props) {
 						</Button>
 					</Link>
 				</div>
+				<span className="my-2">OR</span>
+				<GoogleLogin />
 				<form className="input-field mt-3" onSubmit={handleSubmit}>
 					<div>
 						<h6>Email</h6>
@@ -57,7 +76,7 @@ function SignUp(props) {
 						/>
 					</div>
 
-					<div className="my-4">
+					<div className="mt-4 mb-1">
 						<h6>Password</h6>
 						<Input
 							className="user-input"
@@ -65,9 +84,37 @@ function SignUp(props) {
 							id="password"
 							onChange={handleInput}
 							value={signUp.password}
-							pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$"
 							required
 						/>
+						<div style={{ fontSize: "12px" }}>
+							<ul className="d-flex justify-content-between p-1 pl-3">
+								<li
+									style={{
+										color: reUppercase.test(signUp.password)
+											? "#7dbf5c"
+											: "red",
+									}}
+								>
+									An uppercase letter
+								</li>
+								<li
+									style={{
+										color: re6Chars.test(signUp.password) ? "#7dbf5c" : "red",
+									}}
+								>
+									Min 6 chars
+								</li>
+								<li
+									style={{
+										color: reSpecialChar.test(signUp.password)
+											? "#7dbf5c"
+											: "red",
+									}}
+								>
+									A special char
+								</li>
+							</ul>
+						</div>
 					</div>
 					<div>
 						<h6>Confirm Password</h6>
@@ -79,6 +126,20 @@ function SignUp(props) {
 							value={signUp.confirm}
 							required
 						/>
+						<ul className="p-1 pl-3" style={{ fontSize: "12px" }}>
+							<li
+								style={{
+									color:
+										signUp.confirm === signUp.password && signUp.password !== ""
+											? "#7dbf5c"
+											: "red",
+								}}
+							>
+								{signUp.confirm === signUp.password && signUp.password !== ""
+									? "Password matched"
+									: "Password not matched"}
+							</li>
+						</ul>
 					</div>
 					<FormGroup check>
 						<Label check style={{ fontSize: "12px" }}>

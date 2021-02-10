@@ -9,14 +9,13 @@ import Chat from "./pages/Chat";
 import ForgotPassword from "./pages/ForgotPassword";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
-import LoginWithGoogle from "./pages/LoginWithGoogle";
 import ManageData from "./pages/ManageData";
 import ProductDetail from "./pages/ProductDetail";
 import Profile from "./pages/Profile";
 import ResetPassword from "./pages/ResetPassword";
 import SignUp from "./pages/SignUp";
 import Verification from "./pages/Verification";
-import { keepLoginAction } from "./redux/actions";
+import { keepLoginAction, keepLoginGoogleAction } from "./redux/actions";
 
 function App(props) {
 	useEffect(() => {
@@ -43,7 +42,6 @@ function App(props) {
 			<Route exact path="/verification" component={Verification} />
 			<Route exact path="/forgot-password" component={ForgotPassword} />
 			<Route exact path="/reset-password" component={ResetPassword} />
-			<Route exact path="/loginwithgoogle" component={LoginWithGoogle} />
 			<Route exact path="/chat" component={Chat} />
 		</div>
 	);
@@ -58,4 +56,5 @@ const mapStateToProps = ({ user, cart }) => {
 
 export default connect(mapStateToProps, {
 	keepLoginAction,
+	keepLoginGoogleAction,
 })(App);

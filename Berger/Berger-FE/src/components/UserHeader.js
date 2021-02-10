@@ -11,6 +11,7 @@ import {
 
 function UserHeader(props) {
 	const { logout, cartLength, email } = props;
+
 	return (
 		<div className="header-right d-flex justify-content-end align-items-center">
 			<div className="d-flex align-items-center">

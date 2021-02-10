@@ -33,17 +33,18 @@ function ResetPassword(props) {
 		return <Redirect to="/" />;
 	}
 	return (
-		<div>
+		<div className="container-card m-5">
+			<h1>Reset Password</h1>
 			<form onSubmit={handleNewPassword}>
 				<div>
 					<label>Input New Password</label>
 					<Input type="password" id="password" onChange={handleInput} />
 				</div>
-				<div>
+				<div className="my-3">
 					<label>Confirm New Password</label>
 					<Input type="password" id="confirmPassword" onChange={handleInput} />
 				</div>
-				<Button>Set new password</Button>
+				<Button color="warning">Set new password</Button>
 			</form>
 		</div>
 	);
